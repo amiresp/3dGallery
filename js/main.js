@@ -1,4 +1,42 @@
+import { Box } from "cannon";
 import * as THREE from "three";
+
+document.addEventListener("DOMContentLoaded", function () {
+  // const toggleInfoButton = document.getElementById("toggle-info");
+  const exploreArtButton = document.getElementById("play_button");
+  const infoPanel = document.getElementById("info-panel");
+  const aboutOverlay = document.getElementById("about-overlay");
+  const audioControls = document.getElementById("audio_controls");
+  const paintingInfo = document.getElementById("painting-info");
+  const menu = document.getElementById("menu");
+
+  exploreArtButton.addEventListener("click", function () {
+    const divsToHide = [
+      infoPanel,
+      aboutOverlay,
+      audioControls,
+      paintingInfo,
+      menu,
+    ];
+
+    for (const div of divsToHide) {
+      if (div.style.display === "none" || div.style.display === "") {
+        div.style.display = "block";
+      } else {
+        div.style.display = "none";
+      }
+    }
+
+    if (
+      divsToHide[0].style.display === "none" ||
+      divsToHide[0].style.display === ""
+    ) {
+      toggleInfoButton.innerText = "Show";
+    } else {
+      toggleInfoButton.innerText = "Hide";
+    }
+  });
+});
 
 // Create a new scene
 const scene = new THREE.Scene();
@@ -50,7 +88,7 @@ scene.add(sunlight);
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 
 // Create a basic material with red color
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+const material = new THREE.MeshToonMaterial({ color: "green" });
 
 // Create a cube mesh with the geometry and material
 const cube = new THREE.Mesh(cubeGeometry, material);
@@ -239,6 +277,8 @@ for (let i = 0; i < wallgroup.children.length; i++) {
 
 let render = function () {
   requestAnimationFrame(render);
+  cube.rotation.y += 0.02;
+  cube.rotation.x += 0.02;
   moon.rotation.y += 0.00035;
   starGroup.rotation.y += 0.0004;
 
