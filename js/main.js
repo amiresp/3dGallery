@@ -1,5 +1,6 @@
 import { Box } from "cannon";
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   // const toggleInfoButton = document.getElementById("toggle-info");
@@ -76,10 +77,10 @@ ambientLight.position.set(0, 0, 5);
 scene.add(ambientLight);
 
 // Create a directional light
-const sunlight = new THREE.DirectionalLight(0xffffff, 1);
+const sunlight = new THREE.DirectionalLight(0xffffff, 2);
 
 // Set the position of the directional light
-sunlight.position.set(0, 15, 0);
+sunlight.position.set(450, 40, -20);
 
 // Add the directional light to the scene
 scene.add(sunlight);
@@ -88,12 +89,26 @@ scene.add(sunlight);
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 
 // Create a basic material with red color
-const material = new THREE.MeshToonMaterial({ color: "green" });
+const material = new THREE.MeshStandardMaterial({ color: "white" });
 
 // Create a cube mesh with the geometry and material
 const cube = new THREE.Mesh(cubeGeometry, material);
 cube.translateY(0);
 scene.add(cube);
+//orbit controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.5;
+controls.screenSpacePanning = false;
+controls.minDistance = 1;
+controls.maxDistance = 800;
+controls.maxPolarAngle = Math.PI / 2;
+controls.update();
+
+// Create a directional light
+const light = new THREE.SpotLight(0xffffff, 200);
+light.position.set(0, 10, 0);
+scene.add(light);
 
 //event listeners for keydown and keyup
 
@@ -148,7 +163,7 @@ scene.add(wallgroup); // add the group to the scene
 // const frontwallTexture = new THREE.TextureLoader().load("img/FrontWall.jpg");
 // textureLoader.load("img/FrontWall.jpg");
 const frontwallGeometry = new THREE.BoxGeometry(50, 25, 0.1);
-const frontwallMaterial = new THREE.MeshLambertMaterial({ color: "grey" });
+const frontwallMaterial = new THREE.MeshPhysicalMaterial({ color: "grey" });
 const frontwall = new THREE.Mesh(frontwallGeometry, frontwallMaterial);
 frontwall.position.z = -22;
 frontwall.position.y = 2.2;
@@ -191,7 +206,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 //moon
 const moonGeometry = new THREE.SphereGeometry(80, 35, 35);
-const moonMaterial = new THREE.MeshStandardMaterial({
+const moonMaterial = new THREE.MeshBasicMaterial({
   color: "white",
 
   map: new THREE.TextureLoader().load("/img/moon-texture.jpg"),
@@ -277,8 +292,8 @@ for (let i = 0; i < wallgroup.children.length; i++) {
 
 let render = function () {
   requestAnimationFrame(render);
-  cube.rotation.y += 0.02;
-  cube.rotation.x += 0.02;
+  cube.rotation.y += 0.002;
+  cube.rotation.x += 0.002;
   moon.rotation.y += 0.00035;
   starGroup.rotation.y += 0.0004;
 
