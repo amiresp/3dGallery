@@ -1,43 +1,54 @@
-import { Box } from "cannon";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-document.addEventListener("DOMContentLoaded", function () {
-  // const toggleInfoButton = document.getElementById("toggle-info");
-  const exploreArtButton = document.getElementById("play_button");
-  const infoPanel = document.getElementById("info-panel");
-  const aboutOverlay = document.getElementById("about-overlay");
-  const audioControls = document.getElementById("audio_controls");
-  const paintingInfo = document.getElementById("painting-info");
-  const menu = document.getElementById("menu");
+import { setupAudio } from "./audioGuide.js";
 
-  exploreArtButton.addEventListener("click", function () {
-    const divsToHide = [
-      infoPanel,
-      aboutOverlay,
-      audioControls,
-      paintingInfo,
-      menu,
-    ];
+import { createPaintings } from "./paintings.js";
 
-    for (const div of divsToHide) {
-      if (div.style.display === "none" || div.style.display === "") {
-        div.style.display = "block";
-      } else {
-        div.style.display = "none";
-      }
-    }
+import { setupEventListeners } from "./eventListeners.js";
 
-    if (
-      divsToHide[0].style.display === "none" ||
-      divsToHide[0].style.display === ""
-    ) {
-      toggleInfoButton.innerText = "Show";
-    } else {
-      toggleInfoButton.innerText = "Hide";
-    }
-  });
-});
+import { setupPlayButton } from "./menu.js";
+import { clickHandling } from "./clickHandling.js";
+//const paintings = createPaintings(scene, textureLoader);
+
+//addObjectsToScene(scene, paintings);
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const toggleInfoButton = document.getElementById("toggle-info");
+//   const exploreArtButton = document.getElementById("play_button");
+//   const infoPanel = document.getElementById("info-panel");
+//   const aboutOverlay = document.getElementById("about-overlay");
+//   const audioControls = document.getElementById("audio_controls");
+//   const paintingInfo = document.getElementById("painting-info");
+//   const menu = document.getElementById("menu");
+
+//   exploreArtButton.addEventListener("click", function () {
+//     const divsToHide = [
+//       infoPanel,
+//       aboutOverlay,
+//       audioControls,
+//       paintingInfo,
+//       menu,
+//     ];
+
+//     for (const div of divsToHide) {
+//       if (div.style.display === "none" || div.style.display === "") {
+//         div.style.display = "block";
+//       } else {
+//         div.style.display = "none";
+//       }
+//     }
+
+//     if (
+//       divsToHide[0].style.display === "none" ||
+//       divsToHide[0].style.display === ""
+//     ) {
+//       toggleInfoButton.innerText = "Show";
+//     } else {
+//       toggleInfoButton.innerText = "Hide";
+//     }
+//   });
+// });
 
 // Create a new scene
 const scene = new THREE.Scene();
@@ -112,6 +123,17 @@ scene.add(light);
 
 //event listeners for keydown and keyup
 
+//!
+const textureLoader = new THREE.TextureLoader();
+const paintings = createPaintings(scene, textureLoader);
+clickHandling(renderer, camera, paintings);
+
+//!
+
+setupAudio(camera);
+setupPlayButton(controls);
+
+setupEventListeners(controls);
 document.addEventListener("keydown", onKeyDown, false);
 
 function onKeyDown(event) {
@@ -136,7 +158,7 @@ function onKeyDown(event) {
   }
 }
 // Create a texture map
-let textureLoader = new THREE.TextureLoader(); // Create a texture loader so we can load our image file
+// Create a texture loader so we can load our image file
 let floorTexture = new THREE.TextureLoader().load("img/Floor.jpg");
 
 textureLoader.load("img/Floor.jpg");
@@ -208,13 +230,7 @@ document.body.appendChild(renderer.domElement);
 const moonGeometry = new THREE.SphereGeometry(80, 35, 35);
 const moonMaterial = new THREE.MeshBasicMaterial({
   color: "white",
-
   map: new THREE.TextureLoader().load("/img/moon-texture.jpg"),
-  side: THREE.DoubleSide,
-  displacementMap: new THREE.TextureLoader().load("/img/moon-displacement.jpg"),
-  displacementScale: 0.5,
-  bumpMap: new THREE.TextureLoader().load("/img/moon-displacement.jpg"),
-  bumpScale: 0.4,
 });
 const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 moon.position.set(500, 35, -20);
@@ -289,6 +305,32 @@ for (let i = 0; i < wallgroup.children.length; i++) {
   wallgroup.children[i].BBox = new THREE.Box3();
   wallgroup.children[i].BBox.setFromObject(wallgroup.children[i]);
 }
+
+// create the bounding box for picture
+function createPicture(pictureUrl, width, height, position) {
+  const pictureGeometry = new THREE.BoxGeometry(width, height, 0.2);
+  const pictureMaterial = new THREE.MeshBasicMaterial({
+    map: new THREE.TextureLoader().load(pictureUrl),
+  });
+  const picture = new THREE.Mesh(pictureGeometry, pictureMaterial);
+  picture.position.set(position.x, position.y, position.z);
+  scene.add(picture);
+}
+const picture1 = createPicture("/artworks/0.jpg", 10, 10, {
+  x: 0,
+  y: 5,
+  z: -21.99,
+});
+const picture2 = createPicture("/artworks/1.jpg", 10, 10, {
+  x: -12,
+  y: 5,
+  z: -21.99,
+});
+const picture3 = createPicture("/artworks/2.jpg", 10, 10, {
+  x: 12,
+  y: 5,
+  z: -21.99,
+});
 
 let render = function () {
   requestAnimationFrame(render);
