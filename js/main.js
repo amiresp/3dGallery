@@ -84,7 +84,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 1);
 // Set the ambient light position
 ambientLight.position.set(0, 0, 5);
 
-// Add the ambient light to the scene
+// Add the ambient light to the scene2
 scene.add(ambientLight);
 
 // Create a directional light
