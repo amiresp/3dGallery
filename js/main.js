@@ -4,9 +4,9 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { setupAudio } from "./audioGuide.js";
 
 import { createPaintings } from "./paintings.js";
-
+import { createWalls } from "./walls.js";
 import { setupEventListeners } from "./eventListeners.js";
-
+import { createBoundingBoxes } from "./boundingBox.js";
 import { setupPlayButton } from "./menu.js";
 import { clickHandling } from "./clickHandling.js";
 //const paintings = createPaintings(scene, textureLoader);
@@ -162,6 +162,8 @@ function onKeyDown(event) {
 let floorTexture = new THREE.TextureLoader().load("img/Floor.jpg");
 
 textureLoader.load("img/Floor.jpg");
+const walls = createWalls(scene, textureLoader);
+createBoundingBoxes(walls);
 
 // Create the floor plane.
 let planeGeometry = new THREE.BoxGeometry(45, 45); // BoxGeometry is the shape of the object
