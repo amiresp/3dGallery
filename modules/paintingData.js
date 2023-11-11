@@ -3,9 +3,9 @@ export const paintingData = [
   ...Array.from({ length: 4 }, (_, i) => ({
     // Array.from creates an array from an array-like object. The first parameter is the array-like object. The second parameter is a map function that is called for each element in the array-like object. The map function takes two parameters: the element and the index. The map function returns the value that will be added to the new array. In this case, we are returning an object with the painting data. `_` is a placeholder for the element. We don't need it because we are not using the element. `i` is the index. We use it to set the painting number.
     imgSrc: `artworks/${i + 1}.jpg`, // `i + 1` is the painting number. We add 1 to the index because the index starts at 0 but we want the painting numbers to start at 1.
-    width: 5, // width of the painting
-    height: 3, // height of the painting
-    position: { x: -15 + 10 * i, y: 2, z: -19.5 }, // position of the painting
+    width: 8, // width of the painting
+    height: 8, // height of the painting
+    position: { x: -20 + 15 * i, y: 4, z: -39.9 }, // position of the painting
     rotationY: 0, // rotation of the painting
     info: {
       // info about the painting
@@ -23,7 +23,7 @@ export const paintingData = [
     imgSrc: `artworks/${i + 5}.jpg`,
     width: 5,
     height: 3,
-    position: { x: -15 + 10 * i, y: 2, z: 19.5 },
+    position: { x: -15 + 10 * i, y: 2, z: 29.9 },
     rotationY: Math.PI,
     info: {
       title: `Van Gogh ${i + 5}`,
@@ -40,7 +40,7 @@ export const paintingData = [
     imgSrc: `artworks/${i + 9}.jpg`,
     width: 5,
     height: 3,
-    position: { x: -19.5, y: 2, z: -15 + 10 * i },
+    position: { x: -29.9, y: 2, z: -35 + 10 * i },
     rotationY: Math.PI / 2,
     info: {
       title: `Van Gogh ${i + 9}`,
@@ -57,7 +57,7 @@ export const paintingData = [
     imgSrc: `artworks/${i + 13}.jpg`,
     width: 5,
     height: 3,
-    position: { x: 19.5, y: 2, z: -15 + 10 * i },
+    position: { x: 29.9, y: 2, z: -5 + 10 * i },
     rotationY: -Math.PI / 2,
     info: {
       title: `Van Gogh ${i + 13}`,
@@ -66,6 +66,21 @@ export const paintingData = [
         i + 13
       } is a captivating piece by Vincent van Gogh, reflecting his distinctive style and deep passion for art.`,
       year: `Year ${i + 13}`,
+      link: "https://github.com/Aliozzaim",
+    },
+  })),
+  //ataturk paintings
+  ...Array.from({ length: 2 }, (_, i) => ({
+    imgSrc: `artworks/ataturk${i + 1}.jpg`,
+    width: 10,
+    height: 10,
+    position: { x: -20 + 15 * i, y: 2, z: 0 },
+    rotationY: 0,
+    info: {
+      title: `Father of the Turks`,
+      artist: "Mustafa Kemal Atatürk",
+      description: `The visionary leader of modern Turkey is depicted in full military regalia. His stern gaze and detailed uniform symbolize both strategic acumen and disciplined leadership, capturing the essence of a transformative era in Turkish history.`,
+      year: `Year ${i + 1923}`,
       link: "https://github.com/Aliozzaim",
     },
   })),

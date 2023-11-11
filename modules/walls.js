@@ -5,19 +5,35 @@ export function createWalls(scene, textureLoader) {
   scene.add(wallGroup);
 
   const normalTexture = textureLoader.load(
-    "leather_white_4k.gltf/textures/leather_white_nor_gl_4k.jpg"
+    "wallTexture/smooth-stucco-Normal-dx.png"
   );
   const roughnessTexture = textureLoader.load(
-    "leather_white_4k.gltf/textures/leather_white_rough_4k.jpg"
+    "wallTexture/smooth-stucco-Roughness.png"
   );
-
+  const metalTexture = textureLoader.load(
+    "wallTexture/smooth-stucco-Metallic.png"
+  );
+  const aoTexture = textureLoader.load("wallTexture/smooth-stucco-ao.png");
+  const albedoTexture = textureLoader.load(
+    "wallTexture/smooth-stucco-albedo.png"
+  );
+  const heightTexture = textureLoader.load(
+    "wallTexture/smooth-stucco-height.png"
+  );
   normalTexture.wrapS = normalTexture.wrapT = THREE.RepeatWrapping;
   roughnessTexture.wrapS = roughnessTexture.wrapT = THREE.RepeatWrapping;
+  metalTexture.wrapS = metalTexture.wrapT = THREE.RepeatWrapping;
+  aoTexture.wrapS = aoTexture.wrapT = THREE.RepeatWrapping;
+  albedoTexture.wrapS = albedoTexture.wrapT = THREE.RepeatWrapping;
 
   const wallMaterial = new THREE.MeshStandardMaterial({
     color: 0xadadae,
     normalMap: normalTexture,
     roughnessMap: roughnessTexture,
+    metalnessMap: metalTexture,
+    aoMap: aoTexture,
+    map: albedoTexture,
+
     side: THREE.DoubleSide,
   });
   // Front Wall
