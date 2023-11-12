@@ -40,45 +40,56 @@ export const setupLighting = (scene, paintings) => {
 
   const frontWallSpotlight = createSpotlight(
     0,
-    6.7,
-    -13,
+    20,
+    -42,
     10,
     new THREE.Vector3(0, 0, -20)
   );
   scene.add(frontWallSpotlight);
   const backWallSpotlight = createSpotlight(
     0,
-    6.7,
-    13,
-    1.15,
+    10,
+    10,
+    15,
     new THREE.Vector3(0, 0, 20)
   );
-
+  scene.add(backWallSpotlight);
   const leftWallSpotlight = createSpotlight(
     -13,
     6.7,
     0,
-    1.15,
+    20,
     new THREE.Vector3(-20, 0, 0)
   );
-
+  scene.add(leftWallSpotlight);
   const rightWallSpotlight = createSpotlight(
     13,
-    6.7,
+    8,
     0,
-    1.15,
-    new THREE.Vector3(20, 0, 0)
+    15,
+    new THREE.Vector3(20, 0, 5)
   );
-
+  scene.add(rightWallSpotlight);
   const statueSpotlight = createSpotlight(
     0,
-    10,
-    0,
-    1,
+    15,
+    2,
+    100,
     new THREE.Vector3(0, -4.2, 0)
   ); // Spotlight for the statue
-  statueSpotlight.angle = 0.457;
-  statueSpotlight.decay = 1;
+
+  scene.add(statueSpotlight);
+  statueSpotlight.angle = 0.3;
+  statueSpotlight.decay = 1.5;
   statueSpotlight.penumbra = 0.2;
   statueSpotlight.distance = 0;
+  //model light
+  const modelLight = new THREE.PointLight(0xfcbe03, 25);
+  modelLight.position.set(0, 12, -20);
+
+  scene.add(modelLight);
+  const modelLight1 = new THREE.PointLight(0xfcbe03, 50);
+  modelLight1.position.set(0, 9, -20);
+
+  scene.add(modelLight1);
 };

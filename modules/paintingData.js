@@ -70,11 +70,11 @@ export const paintingData = [
     },
   })),
   //ataturk paintings
-  ...Array.from({ length: 2 }, (_, i) => ({
+  ...Array.from({ length: 1 }, (_, i) => ({
     imgSrc: `artworks/ataturk${i + 1}.jpg`,
     width: 10,
     height: 10,
-    position: { x: -20 + 15 * i, y: 2, z: 0 },
+    position: { x: 0 + 15 * i, y: 2, z: 0.3 },
     rotationY: 0,
     info: {
       title: `Father of the Turks`,

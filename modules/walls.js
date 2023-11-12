@@ -17,9 +17,9 @@ export function createWalls(scene, textureLoader) {
   const albedoTexture = textureLoader.load(
     "wallTexture/smooth-stucco-albedo.png"
   );
-  const heightTexture = textureLoader.load(
-    "wallTexture/smooth-stucco-height.png"
-  );
+  // const heightTexture = textureLoader.load(
+  //   "wallTexture/smooth-stucco-height.png"
+  // );
   normalTexture.wrapS = normalTexture.wrapT = THREE.RepeatWrapping;
   roughnessTexture.wrapS = roughnessTexture.wrapT = THREE.RepeatWrapping;
   metalTexture.wrapS = metalTexture.wrapT = THREE.RepeatWrapping;
@@ -49,8 +49,9 @@ export function createWalls(scene, textureLoader) {
     new THREE.BoxGeometry(80, 30, 0.001),
     wallMaterial
   );
+  //boardWall
   const boardWall = new THREE.Mesh(
-    new THREE.BoxGeometry(10, 20, 0.01),
+    new THREE.BoxGeometry(10, 20, 0.3),
     wallMaterial
   );
 

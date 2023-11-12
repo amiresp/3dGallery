@@ -13,7 +13,7 @@ import { setupPlayButton } from "./modules/menu.js";
 import { setupAudio } from "./modules/audioGuide.js";
 import { clickHandling } from "./modules/clickHandling.js";
 import { setupVR } from "./modules/VRSupport.js";
-import { loadStatueModel } from "./modules/statue.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let { camera, controls, renderer } = setupScene();
 
@@ -40,18 +40,73 @@ clickHandling(renderer, camera, paintings);
 
 setupRendering(scene, camera, renderer, paintings, controls, walls);
 
-loadStatueModel(scene);
+//loadStatueModel(scene);
 
 setupVR(renderer);
 
-const moonGeometry = new THREE.SphereGeometry(50, 35, 35);
-const moonMaterial = new THREE.MeshBasicMaterial({
-  color: "white",
-  map: new THREE.TextureLoader().load("/img/moon-texture.jpg"),
+//load model
+const loader = new GLTFLoader();
+loader.load("/scanes/model.gltf", function (gltf) {
+  //scene.add(gltf.scene);
 });
-const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-moon.position.set(500, 35, -20);
-scene.add(moon);
+
+loader.load("./public/scanes/Chandelier_01_4k.gltf", function (gltf) {
+  // Create a texture loader
+  var textureLoader = new THREE.TextureLoader();
+
+  // Load arm texture
+  textureLoader.load(
+    "./public/scanes/textures/Chandelier_01_arm_4k.jpg",
+    function (armTexture) {
+      // Load diff texture
+      textureLoader.load(
+        "./public/scanes/textures/Chandelier_01_diff_4k.jpg",
+        function (diffTexture) {
+          // Load normal texture
+          textureLoader.load(
+            "./public/scanes/textures/Chandelier_01_nor_gl_4k.jpg",
+            function (norTexture) {
+              // Iterate through all the materials in the model
+              gltf.scene.traverse(function (node) {
+                if (node.isMesh) {
+                  // Check if the material has a map property (supports textures)
+                  if (node.material.map) {
+                    // Assign the appropriate texture based on your naming convention
+                    if (node.name.includes("arm")) {
+                      node.material.map = armTexture;
+                    } else if (node.name.includes("diff")) {
+                      node.material.map = diffTexture;
+                    } else if (node.name.includes("nor")) {
+                      node.material.map = norTexture;
+                    }
+                    // Optional: You can set other texture-related properties here
+                    // node.material.map.repeat.set(2, 2);
+                    // node.material.map.offset.set(0.5, 0.5);
+                    // Update the material to reflect the changes
+                    node.material.needsUpdate = true;
+                  }
+                }
+              });
+
+              gltf.scene.position.set(0, 15, -20);
+              gltf.scene.scale.set(10, 8, 10);
+              scene.add(gltf.scene);
+            }
+          );
+        }
+      );
+    }
+  );
+});
+
+// const moonGeometry = new THREE.SphereGeometry(50, 35, 35);
+// const moonMaterial = new THREE.MeshBasicMaterial({
+//   color: "white",
+//   map: new THREE.TextureLoader().load("/img/moon-texture.jpg"),
+// });
+// const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+// moon.position.set(500, 35, -20);
+// scene.add(moon);
 
 //application gltf loader
 // const loader = new THREE.GLTFLoader();
