@@ -78,7 +78,6 @@ export const setupLighting = (scene, paintings) => {
     new THREE.Vector3(0, -4.2, 0)
   ); // Spotlight for the statue
 
-  scene.add(statueSpotlight);
   statueSpotlight.angle = 0.3;
   statueSpotlight.decay = 1.5;
   statueSpotlight.penumbra = 0.2;

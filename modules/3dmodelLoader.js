@@ -1,42 +1,45 @@
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as THREE from "three";
 
-function DmodelLoader(
-  Url,
-  textureURL,
+export function modelLoader(
+  GLTF,
   armTextureURL,
   diffTextureURL,
-  norTextureURL,
+  roughTextureURL,
   scene,
   position,
   scale
 ) {
   const loader = new GLTFLoader();
 
-  loader.load(`${Url}`, function (gltf) {
+  loader.load(`${GLTF}`, function (gltf) {
     const textureLoader = new THREE.TextureLoader();
 
     textureLoader.load(`${armTextureURL}`, function (armTexture) {
       textureLoader.load(`${diffTextureURL}`, function (diffTexture) {
-        textureLoader.load(`${norTextureURL}`, function (norTexture) {
+        // textureLoader.load(`${norTextureURL}`, function (norTexture) {
+        textureLoader.load(`${roughTextureURL}`, function (roughTexture) {
           gltf.scene.traverse(function (node) {
             if (node.isMesh) {
+              console.log("fsdfd");
               if (node.material.map) {
                 if (node.name.includes("arm")) {
                   node.material.map = armTexture;
                 } else if (node.name.includes("diff")) {
                   node.material.map = diffTexture;
-                } else if (node.name.includes("nor")) {
-                  node.material.map = norTexture;
+                  // } else if (node.name.includes("nor")) {
+                  //   node.material.map = norTexture;
+                } else if (node.name.includes("rough")) {
+                  node.material.map = roughTexture;
                 }
-                node.material.needsUpdate = true;
               }
+
+              node.material.needsUpdate = true;
             }
           });
 
-          // Set position and scale
           gltf.scene.position.copy(position || new THREE.Vector3(0, 0, 0));
-          gltf.scene.scale.copy(scale || new THREE.Vector3(1, 1, 1));
+          gltf.scene.scale.copy(scale || new THREE.Vector3(10, 10, 10));
 
           scene.add(gltf.scene);
         });

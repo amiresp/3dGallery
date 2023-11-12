@@ -14,10 +14,93 @@ import { setupAudio } from "./modules/audioGuide.js";
 import { clickHandling } from "./modules/clickHandling.js";
 import { setupVR } from "./modules/VRSupport.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { modelLoader } from "./modules/3dmodelLoader.js";
+
+const loader = new GLTFLoader();
 
 let { camera, controls, renderer } = setupScene();
 
 setupAudio(camera);
+const sofa = new THREE.Object3D();
+loader.load("scanes/sofa2/sofa_02_4k.gltf", function (gltf) {
+  var textureLoader = new THREE.TextureLoader();
+
+  textureLoader.load(
+    "scanes/sofa2/textures/sofa_02_arm_4k.jpg",
+    function (armTexture) {
+      // Load diff texture
+      textureLoader.load(
+        "scanes/sofa2/textures/sofa_02_diff_4k.jpg",
+        function (diffTexture) {
+          // Load normal texture
+          textureLoader.load(
+            "scanes/sofa2/textures/sofa_02_nor_gl_4k.jpg",
+            function (norTexture) {
+              // Iterate through all the materials in the model
+              gltf.scene.traverse(function (node) {
+                if (node.isMesh) {
+                  // Check if the material has a map property (supports textures)
+                  if (node.material.map) {
+                    // Assign the appropriate texture based on your naming convention
+                    if (node.name.includes("arm")) {
+                      node.material.map = armTexture;
+                    } else if (node.name.includes("diff")) {
+                      node.material.map = diffTexture;
+                    } else if (node.name.includes("nor")) {
+                      node.material.map = norTexture;
+                    }
+                    // Optional: You can set other texture-related properties here
+                    // node.material.map.repeat.set(2, 2);
+                    // node.material.map.offset.set(0.5, 0.5);
+                    // Update the material to reflect the changes
+                    node.material.needsUpdate = true;
+                  }
+                }
+              });
+
+              gltf.scene.position.set(26, -5, -26);
+              gltf.scene.rotation.y = -Math.PI / 2;
+              gltf.scene.scale.set(8, 8, 8);
+              scene.add(gltf.scene);
+              const spotlight = new THREE.PointLight(0xffffff, 50);
+
+              spotlight.position.set(26, 5, -26);
+
+              scene.add(spotlight);
+              const modalLight2 = new THREE.PointLight(0xfcbe03, 50);
+              modalLight2.position.set(
+                26.01742655802701,
+                1,
+
+                -17.795158750061965
+              );
+              modalLight2.castShadow = true;
+
+              scene.add(modalLight2);
+              const modalLight3 = new THREE.PointLight(0xfcbe03, 50);
+              modalLight3.position.set(
+                24.84175427100156,
+                0.5,
+                -34.07476250026224
+              );
+              modalLight3.castShadow = true;
+
+              scene.add(modalLight3);
+
+              console.log("Camera Position:", camera.position);
+              console.log("Model Position:", gltf.scene.position);
+              console.log("Model Scale:", gltf.scene.scale);
+              // const isColliding = checkCollisionWithModel(camera, gltf.scene);
+              // console.log("Collision with model:", isColliding);
+            }
+          );
+        }
+      );
+    }
+  );
+});
+
+// Replace this with your actual sofa object or position
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -44,27 +127,86 @@ setupRendering(scene, camera, renderer, paintings, controls, walls);
 
 setupVR(renderer);
 
-//load model
-const loader = new GLTFLoader();
-loader.load("/scanes/model.gltf", function (gltf) {
-  //scene.add(gltf.scene);
-});
+modelLoader(
+  "./public/scanes/sofasofa_03_4k.gltf",
+  "./public/scanes/sofa/textures/sofa_03_rough_gl_4k.jpg",
+  "./public/scanes/sofa/textures/sofa_03_diff_4k.jpg",
+  "./public/scanes/sofa/textures/sofa_03_nor_gl_4k.jpg",
+  scene,
+  new THREE.Vector3(0, 0, 0), // Corrected syntax for position
+  new THREE.Vector3(100, 10, 10) // Corrected syntax for scale
+);
 
-loader.load("./public/scanes/Chandelier_01_4k.gltf", function (gltf) {
+export function modelLoader2(
+  GLTF,
+  defaultTextureURL,
+  diffTextureURL,
+  norTextureURL,
+  roughTextureURL,
+  scene,
+  position,
+  scale
+) {
+  const loader = new GLTFLoader();
+
+  loader.load(`${GLTF}`, function (gltf) {
+    const textureLoader = new THREE.TextureLoader();
+
+    textureLoader.load(`${defaultTextureURL}`, function (defaultTexture) {
+      textureLoader.load(`${diffTextureURL}`, function (diffTexture) {
+        textureLoader.load(`${norTextureURL}`, function (norTexture) {
+          textureLoader.load(`${roughTextureURL}`, function (roughTexture) {
+            gltf.scene.traverse(function (node) {
+              if (node.isMesh) {
+                if (node.material.map) {
+                  if (node.name.includes("diff")) {
+                    node.material.map = diffTexture;
+                  } else if (node.name.includes("nor")) {
+                    node.material.map = norTexture;
+                  } else if (node.name.includes("rough")) {
+                    node.material.map = roughTexture;
+                  } else {
+                    // Use the default texture for unspecified parts
+                    node.material.map = defaultTexture;
+                  }
+
+                  // Optional: You can set other texture-related properties here
+                  // node.material.map.repeat.set(2, 2);
+                  // node.material.map.offset.set(0.5, 0.5);
+
+                  // Update the material to reflect the changes
+                  node.material.needsUpdate = true;
+                }
+              }
+            });
+
+            // Set position and scale
+            gltf.scene.position.copy(position || new THREE.Vector3(0, 0, 0));
+            gltf.scene.scale.copy(scale || new THREE.Vector3(1, 1, 1));
+
+            scene.add(gltf.scene);
+          });
+        });
+      });
+    });
+  });
+}
+
+loader.load("scanes/Chandelier_01_4k.gltf", function (gltf) {
   // Create a texture loader
   var textureLoader = new THREE.TextureLoader();
 
   // Load arm texture
   textureLoader.load(
-    "./public/scanes/textures/Chandelier_01_arm_4k.jpg",
+    "scanes/textures/Chandelier_01_arm_4k.jpg",
     function (armTexture) {
       // Load diff texture
       textureLoader.load(
-        "./public/scanes/textures/Chandelier_01_diff_4k.jpg",
+        "scanes/textures/Chandelier_01_diff_4k.jpg",
         function (diffTexture) {
           // Load normal texture
           textureLoader.load(
-            "./public/scanes/textures/Chandelier_01_nor_gl_4k.jpg",
+            "scanes/textures/Chandelier_01_nor_gl_4k.jpg",
             function (norTexture) {
               // Iterate through all the materials in the model
               gltf.scene.traverse(function (node) {
