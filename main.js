@@ -21,7 +21,102 @@ const loader = new GLTFLoader();
 let { camera, controls, renderer } = setupScene();
 
 setupAudio(camera);
-const sofa = new THREE.Object3D();
+
+const textureLoader = new THREE.TextureLoader();
+
+const walls = createWalls(scene, textureLoader);
+const floor = setupFloor(scene);
+const ceiling = createCeiling(scene, textureLoader);
+const paintings = createPaintings(scene, textureLoader);
+const lighting = setupLighting(scene, paintings);
+
+createBoundingBoxes(walls);
+createBoundingBoxes(paintings);
+
+addObjectsToScene(scene, paintings);
+
+setupPlayButton(controls);
+
+setupEventListeners(controls);
+
+clickHandling(renderer, camera, paintings);
+
+setupRendering(scene, camera, renderer, paintings, controls, walls);
+
+//loadStatueModel(scene);
+
+setupVR(renderer);
+
+const sideTable = modelLoader(
+  "./public/scanes/sidetable/side_table_tall_01_4k.gltf",
+  "./public/scanes/sidetable/textures/side_table_tall_01_arm_4k.jpg",
+  "./public/scanes/sidetable/textures/side_table_tall_01_diff_4k.jpg",
+  "./public/scanes/sidetable/textures/side_table_tall_01_nor_gl_4k.jpg",
+  scene,
+  new THREE.Vector3(0, -4, -19.457978829375882), // Corrected syntax for position
+  new THREE.Vector3(8, 7, 8) // Corrected syntax for scale
+);
+modelLoader(
+  "./public/scanes/bust/marble_bust_01_4k.gltf",
+  "./public/scanes/bust/textures/marble_bust_01_diff_4k.jpg",
+  "./public/scanes/bust/textures/marble_bust_01_rough_4k.jpg",
+  "./public/scanes/bust/textures/marble_bust_01_nor_gl_4k.jpg",
+  scene,
+  new THREE.Vector3(0, 0.9, -19.457978829375882), // Corrected syntax for position
+  new THREE.Vector3(10, 7.5, 10) // Corrected syntax for scale
+);
+
+const ottoman = modelLoader(
+  "./public/scanes/ottoman/ottoman_01_4k.gltf",
+  "./public/scanes/ottoman/textures/ottoman_01_arm_4k.jpg",
+  "./public/scanes/ottoman/textures/ottoman_01_diff_4k.jpg",
+  "./public/scanes/ottoman/textures/ottoman_01_nor_gl_4k.jpg",
+  scene,
+  new THREE.Vector3(15, -4, 14.457978829375882), // Corrected syntax for position
+  new THREE.Vector3(6, 5, 6) // Corrected syntax for scale
+);
+// const checkCollision = (camera, horseStatue) => {
+//   console.log(horseStatue);
+//   if (!horseStatue || !horseStatue.geometry) {
+//     console.error("Invalid horseStatue object");
+//     return false;
+//   }
+
+//   // Check if the horseStatue has the updateWorldMatrix method
+//   if (!horseStatue.updateWorldMatrix) {
+//     console.error(
+//       "The horseStatue object does not have the updateWorldMatrix method"
+//     );
+//     return false;
+//   }
+
+//   const playerBoundingBox = new THREE.Box3();
+//   const cameraWorldPosition = new THREE.Vector3();
+//   camera.getWorldPosition(cameraWorldPosition);
+//   playerBoundingBox.setFromCenterAndSize(
+//     cameraWorldPosition,
+//     new THREE.Vector3(2, 2, 2)
+//   );
+
+//   // Update the bounding box for the horse statue
+//   const horseBoundingBox = new THREE.Box3().setFromObject(horseStatue);
+
+//   // Check for collision with the horse statue
+//   if (playerBoundingBox.intersectsBox(horseBoundingBox)) {
+//     console.log("Collision with horse statue!");
+//     // You can handle the collision with the horse statue here
+//     return true; // Indicate that there is a collision
+//   }
+
+//   return false; // No collision
+// };
+
+// setTimeout(() => {
+//   console.log("Checking collision...");
+//   console.log("Camera Position:", sideTable);
+//   checkCollision(camera, sideTable);
+// }, 8000);
+
 loader.load("scanes/sofa2/sofa_02_4k.gltf", function (gltf) {
   var textureLoader = new THREE.TextureLoader();
 
@@ -71,7 +166,6 @@ loader.load("scanes/sofa2/sofa_02_4k.gltf", function (gltf) {
               modalLight2.position.set(
                 26.01742655802701,
                 1,
-
                 -17.795158750061965
               );
               modalLight2.castShadow = true;
@@ -90,7 +184,7 @@ loader.load("scanes/sofa2/sofa_02_4k.gltf", function (gltf) {
               console.log("Camera Position:", camera.position);
               console.log("Model Position:", gltf.scene.position);
               console.log("Model Scale:", gltf.scene.scale);
-              // const isColliding = checkCollisionWithModel(camera, gltf.scene);
+              // const isColliding = updateMovement(camera, gltf.scene);
               // console.log("Collision with model:", isColliding);
             }
           );
@@ -100,147 +194,60 @@ loader.load("scanes/sofa2/sofa_02_4k.gltf", function (gltf) {
   );
 });
 
-// Replace this with your actual sofa object or position
+// export function modelLoader2(
+//   GLTF,
+//   defaultTextureURL,
+//   diffTextureURL,
+//   norTextureURL,
+//   roughTextureURL,
+//   scene,
+//   position,
+//   scale
+// ) {
+//   const loader = new GLTFLoader();
 
-const textureLoader = new THREE.TextureLoader();
+//   loader.load(`${GLTF}`, function (gltf) {
+//     const textureLoader = new THREE.TextureLoader();
 
-const walls = createWalls(scene, textureLoader);
-const floor = setupFloor(scene);
-const ceiling = createCeiling(scene, textureLoader);
-const paintings = createPaintings(scene, textureLoader);
-const lighting = setupLighting(scene, paintings);
+//     textureLoader.load(`${defaultTextureURL}`, function (defaultTexture) {
+//       textureLoader.load(`${diffTextureURL}`, function (diffTexture) {
+//         textureLoader.load(`${norTextureURL}`, function (norTexture) {
+//           textureLoader.load(`${roughTextureURL}`, function (roughTexture) {
+//             gltf.scene.traverse(function (node) {
+//               if (node.isMesh) {
+//                 if (node.material.map) {
+//                   if (node.name.includes("diff")) {
+//                     node.material.map = diffTexture;
+//                   } else if (node.name.includes("nor")) {
+//                     node.material.map = norTexture;
+//                   } else if (node.name.includes("rough")) {
+//                     node.material.map = roughTexture;
+//                   } else {
+//                     // Use the default texture for unspecified parts
+//                     node.material.map = defaultTexture;
+//                   }
 
-createBoundingBoxes(walls);
-createBoundingBoxes(paintings);
+//                   // Optional: You can set other texture-related properties here
+//                   // node.material.map.repeat.set(2, 2);
+//                   // node.material.map.offset.set(0.5, 0.5);
 
-addObjectsToScene(scene, paintings);
+//                   // Update the material to reflect the changes
+//                   node.material.needsUpdate = true;
+//                 }
+//               }
+//             });
 
-setupPlayButton(controls);
+//             // Set position and scale
+//             gltf.scene.position.copy(position || new THREE.Vector3(0, 0, 0));
+//             gltf.scene.scale.copy(scale || new THREE.Vector3(1, 1, 1));
 
-setupEventListeners(controls);
-
-clickHandling(renderer, camera, paintings);
-
-setupRendering(scene, camera, renderer, paintings, controls, walls);
-
-//loadStatueModel(scene);
-
-setupVR(renderer);
-
-modelLoader(
-  "./public/scanes/sofasofa_03_4k.gltf",
-  "./public/scanes/sofa/textures/sofa_03_rough_gl_4k.jpg",
-  "./public/scanes/sofa/textures/sofa_03_diff_4k.jpg",
-  "./public/scanes/sofa/textures/sofa_03_nor_gl_4k.jpg",
-  scene,
-  new THREE.Vector3(0, 0, 0), // Corrected syntax for position
-  new THREE.Vector3(100, 10, 10) // Corrected syntax for scale
-);
-
-export function modelLoader2(
-  GLTF,
-  defaultTextureURL,
-  diffTextureURL,
-  norTextureURL,
-  roughTextureURL,
-  scene,
-  position,
-  scale
-) {
-  const loader = new GLTFLoader();
-
-  loader.load(`${GLTF}`, function (gltf) {
-    const textureLoader = new THREE.TextureLoader();
-
-    textureLoader.load(`${defaultTextureURL}`, function (defaultTexture) {
-      textureLoader.load(`${diffTextureURL}`, function (diffTexture) {
-        textureLoader.load(`${norTextureURL}`, function (norTexture) {
-          textureLoader.load(`${roughTextureURL}`, function (roughTexture) {
-            gltf.scene.traverse(function (node) {
-              if (node.isMesh) {
-                if (node.material.map) {
-                  if (node.name.includes("diff")) {
-                    node.material.map = diffTexture;
-                  } else if (node.name.includes("nor")) {
-                    node.material.map = norTexture;
-                  } else if (node.name.includes("rough")) {
-                    node.material.map = roughTexture;
-                  } else {
-                    // Use the default texture for unspecified parts
-                    node.material.map = defaultTexture;
-                  }
-
-                  // Optional: You can set other texture-related properties here
-                  // node.material.map.repeat.set(2, 2);
-                  // node.material.map.offset.set(0.5, 0.5);
-
-                  // Update the material to reflect the changes
-                  node.material.needsUpdate = true;
-                }
-              }
-            });
-
-            // Set position and scale
-            gltf.scene.position.copy(position || new THREE.Vector3(0, 0, 0));
-            gltf.scene.scale.copy(scale || new THREE.Vector3(1, 1, 1));
-
-            scene.add(gltf.scene);
-          });
-        });
-      });
-    });
-  });
-}
-
-loader.load("scanes/Chandelier_01_4k.gltf", function (gltf) {
-  // Create a texture loader
-  var textureLoader = new THREE.TextureLoader();
-
-  // Load arm texture
-  textureLoader.load(
-    "scanes/textures/Chandelier_01_arm_4k.jpg",
-    function (armTexture) {
-      // Load diff texture
-      textureLoader.load(
-        "scanes/textures/Chandelier_01_diff_4k.jpg",
-        function (diffTexture) {
-          // Load normal texture
-          textureLoader.load(
-            "scanes/textures/Chandelier_01_nor_gl_4k.jpg",
-            function (norTexture) {
-              // Iterate through all the materials in the model
-              gltf.scene.traverse(function (node) {
-                if (node.isMesh) {
-                  // Check if the material has a map property (supports textures)
-                  if (node.material.map) {
-                    // Assign the appropriate texture based on your naming convention
-                    if (node.name.includes("arm")) {
-                      node.material.map = armTexture;
-                    } else if (node.name.includes("diff")) {
-                      node.material.map = diffTexture;
-                    } else if (node.name.includes("nor")) {
-                      node.material.map = norTexture;
-                    }
-                    // Optional: You can set other texture-related properties here
-                    // node.material.map.repeat.set(2, 2);
-                    // node.material.map.offset.set(0.5, 0.5);
-                    // Update the material to reflect the changes
-                    node.material.needsUpdate = true;
-                  }
-                }
-              });
-
-              gltf.scene.position.set(0, 15, -20);
-              gltf.scene.scale.set(10, 8, 10);
-              scene.add(gltf.scene);
-            }
-          );
-        }
-      );
-    }
-  );
-});
-
+//             scene.add(gltf.scene);
+//           });
+//         });
+//       });
+//     });
+//   });
+// }
 // const moonGeometry = new THREE.SphereGeometry(50, 35, 35);
 // const moonMaterial = new THREE.MeshBasicMaterial({
 //   color: "white",
@@ -352,3 +359,52 @@ loader.load("scanes/Chandelier_01_4k.gltf", function (gltf) {
 //   y: 5,
 //   z: -21.99,
 // });
+
+loader.load("scanes/Chandelier_01_4k.gltf", function (gltf) {
+  // Create a texture loader
+  var textureLoader = new THREE.TextureLoader();
+
+  // Load arm texture
+  textureLoader.load(
+    "scanes/textures/Chandelier_01_arm_4k.jpg",
+    function (armTexture) {
+      // Load diff texture
+      textureLoader.load(
+        "scanes/textures/Chandelier_01_diff_4k.jpg",
+        function (diffTexture) {
+          // Load normal texture
+          textureLoader.load(
+            "scanes/textures/Chandelier_01_nor_gl_4k.jpg",
+            function (norTexture) {
+              // Iterate through all the materials in the model
+              gltf.scene.traverse(function (node) {
+                if (node.isMesh) {
+                  // Check if the material has a map property (supports textures)
+                  if (node.material.map) {
+                    // Assign the appropriate texture based on your naming convention
+                    if (node.name.includes("arm")) {
+                      node.material.map = armTexture;
+                    } else if (node.name.includes("diff")) {
+                      node.material.map = diffTexture;
+                    } else if (node.name.includes("nor")) {
+                      node.material.map = norTexture;
+                    }
+                    // Optional: You can set other texture-related properties here
+                    // node.material.map.repeat.set(2, 2);
+                    // node.material.map.offset.set(0.5, 0.5);
+                    // Update the material to reflect the changes
+                    node.material.needsUpdate = true;
+                  }
+                }
+              });
+
+              gltf.scene.position.set(0, 15, -20);
+              gltf.scene.scale.set(10, 8, 10);
+              scene.add(gltf.scene);
+            }
+          );
+        }
+      );
+    }
+  );
+});

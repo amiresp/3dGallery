@@ -8,7 +8,8 @@ export const setupRendering = (
   renderer,
   paintings,
   controls,
-  walls
+  walls,
+  horseStatue
 ) => {
   const clock = new THREE.Clock();
 

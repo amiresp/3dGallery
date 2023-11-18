@@ -70,18 +70,18 @@ export const paintingData = [
     },
   })),
   //ataturk paintings
-  ...Array.from({ length: 1 }, (_, i) => ({
-    imgSrc: `artworks/ataturk${i + 1}.jpg`,
-    width: 10,
-    height: 10,
-    position: { x: 0 + 15 * i, y: 2, z: 0.3 },
-    rotationY: 0,
-    info: {
-      title: `Father of the Turks`,
-      artist: "Mustafa Kemal Atatürk",
-      description: `The visionary leader of modern Turkey is depicted in full military regalia. His stern gaze and detailed uniform symbolize both strategic acumen and disciplined leadership, capturing the essence of a transformative era in Turkish history.`,
-      year: `Year ${i + 1923}`,
-      link: "https://github.com/Aliozzaim",
-    },
-  })),
+  // ...Array.from({ length: 1 }, (_, i) => ({
+  //   imgSrc: `artworks/ataturk${i + 1}.jpg`,
+  //   width: 10,
+  //   height: 10,
+  //   position: { x: 0 + 15 * i, y: 2, z: 0.3 },
+  //   rotationY: 0,
+  //   info: {
+  //     title: `Father of the Turks`,
+  //     artist: "Mustafa Kemal Atatürk",
+  //     description: `The visionary leader of modern Turkey is depicted in full military regalia. His stern gaze and detailed uniform symbolize both strategic acumen and disciplined leadership, capturing the essence of a transformative era in Turkish history.`,
+  //     year: `Year ${i + 1923}`,
+  //     link: "https://github.com/Aliozzaim",
+  //   },
+  // })),
 ];

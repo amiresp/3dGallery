@@ -91,4 +91,13 @@ export const setupLighting = (scene, paintings) => {
   modelLight1.position.set(0, 9, -20);
 
   scene.add(modelLight1);
+
+  //spotlight for classic console
+  const classicConsoleSpotlight = createSpotlight(
+    0,
+    10,
+    0,
+    10,
+    new THREE.Vector3(0, 0, 0)
+  ); // Spotlight for the statue
 };
