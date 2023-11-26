@@ -11,7 +11,7 @@ export const setupEventListeners = (controls, camera, scene) => {
   document.addEventListener(
     "keydown",
 
-    (event) => onKeyDown(event, controls),
+    (event) => onKeyDown(event, controls, camera),
     false
   );
   document.addEventListener(
@@ -43,7 +43,7 @@ function togglePointerLock(controls) {
   lockPointer = !lockPointer; // toggle the lockPointer variable
 }
 
-function onKeyDown(event, controls) {
+function onKeyDown(event, controls, camera) {
   // event is the event object that has the key property
   if (event.key in keysPressed) {
     // check if the key pressed by the user is in the keysPressed object
@@ -62,6 +62,9 @@ function onKeyDown(event, controls) {
     // if the "SPACE" key is pressed
     controls.unlock(); // unlock the pointer
     lockPointer = false;
+  }
+  if (event.key === "e") {
+    console.log("e pressed");
   }
 
   // if key prss}ed is enter or return for mac

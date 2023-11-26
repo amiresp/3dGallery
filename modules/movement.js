@@ -6,6 +6,7 @@ export const keysPressed = {
   ArrowDown: false,
   ArrowLeft: false,
   ArrowRight: false,
+  e: false,
   w: false,
   a: false,
   s: false,
