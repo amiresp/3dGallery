@@ -48,29 +48,29 @@ setupRendering(scene, camera, renderer, paintings, controls, walls);
 setupVR(renderer);
 
 const sideTable = modelLoader(
-  "./public/scanes/sidetable/side_table_tall_01_4k.gltf",
-  "./public/scanes/sidetable/textures/side_table_tall_01_arm_4k.jpg",
-  "./public/scanes/sidetable/textures/side_table_tall_01_diff_4k.jpg",
-  "./public/scanes/sidetable/textures/side_table_tall_01_nor_gl_4k.jpg",
+  "./scanes/sidetable/side_table_tall_01_4k.gltf",
+  "./scanes/sidetable/textures/side_table_tall_01_arm_4k.jpg",
+  "./scanes/sidetable/textures/side_table_tall_01_diff_4k.jpg",
+  "./scanes/sidetable/textures/side_table_tall_01_nor_gl_4k.jpg",
   scene,
   new THREE.Vector3(0, -4, -19.457978829375882), // Corrected syntax for position
   new THREE.Vector3(8, 7, 8) // Corrected syntax for scale
 );
 modelLoader(
-  "./public/scanes/bust/marble_bust_01_4k.gltf",
-  "./public/scanes/bust/textures/marble_bust_01_diff_4k.jpg",
-  "./public/scanes/bust/textures/marble_bust_01_rough_4k.jpg",
-  "./public/scanes/bust/textures/marble_bust_01_nor_gl_4k.jpg",
+  "./scanes/bust/marble_bust_01_4k.gltf",
+  "./scanes/bust/textures/marble_bust_01_diff_4k.jpg",
+  "./scanes/bust/textures/marble_bust_01_rough_4k.jpg",
+  "./scanes/bust/textures/marble_bust_01_nor_gl_4k.jpg",
   scene,
   new THREE.Vector3(0, 0.9, -19.457978829375882), // Corrected syntax for position
   new THREE.Vector3(10, 7.5, 10) // Corrected syntax for scale
 );
 
 const ottoman = modelLoader(
-  "./public/scanes/ottoman/ottoman_01_4k.gltf",
-  "./public/scanes/ottoman/textures/ottoman_01_arm_4k.jpg",
-  "./public/scanes/ottoman/textures/ottoman_01_diff_4k.jpg",
-  "./public/scanes/ottoman/textures/ottoman_01_nor_gl_4k.jpg",
+  "./scanes/ottoman/ottoman_01_4k.gltf",
+  "./scanes/ottoman/textures/ottoman_01_arm_4k.jpg",
+  "./scanes/ottoman/textures/ottoman_01_diff_4k.jpg",
+  "./scanes/ottoman/textures/ottoman_01_nor_gl_4k.jpg",
   scene,
   new THREE.Vector3(15, -4, 14.457978829375882), // Corrected syntax for position
   new THREE.Vector3(6, 5, 6) // Corrected syntax for scale
