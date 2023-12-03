@@ -12,53 +12,76 @@ export function modelLoader(
   rotation = undefined,
   animationSpeed = undefined
 ) {
-  const loader = new GLTFLoader();
+  return new Promise((resolve, reject) => {
+    const loader = new GLTFLoader();
 
-  loader.load(`${GLTF}`, function (gltf) {
-    const textureLoader = new THREE.TextureLoader();
+    const armMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load(armTextureURL),
+      roughness: 0.2,
+      metalness: 0.5,
+    });
 
-    textureLoader.load(`${armTextureURL}`, function (armTexture) {
-      textureLoader.load(`${diffTextureURL}`, function (diffTexture) {
-        textureLoader.load(`${roughTextureURL}`, function (roughTexture) {
-          const object3D = new THREE.Object3D(); // Create a new Object3D
+    const diffMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load(diffTextureURL),
+    });
 
-          gltf.scene.traverse(function (node) {
-            if (node.isMesh) {
-              if (node.material.map) {
-                if (node.name.includes("arm")) {
-                  node.material.map = armTexture;
-                } else if (node.name.includes("diff")) {
-                  node.material.map = diffTexture;
-                } else if (node.name.includes("rough")) {
-                  node.material.map = roughTexture;
-                }
+    const roughMaterial = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load(roughTextureURL),
+    });
+
+    let object3D;
+
+    loader.load(
+      `${GLTF}`,
+      function (gltf) {
+        object3D = new THREE.Object3D();
+
+        gltf.scene.traverse(function (node) {
+          if (node.isMesh) {
+            if (node.material.map) {
+              if (node.name.includes("arm")) {
+                node.material = armMaterial;
+              } else if (node.name.includes("diff")) {
+                node.material = diffMaterial;
+              } else if (node.name.includes("rough")) {
+                node.material = roughMaterial;
               }
-
-              node.material.needsUpdate = true;
             }
-          });
+            node.material.needsUpdate = true;
+          }
+        });
 
-          object3D.add(gltf.scene);
+        object3D.add(gltf.scene);
 
-          object3D.position.copy(position || new THREE.Vector3(0, 0, 0));
-          object3D.scale.copy(scale || new THREE.Vector3(10, 10, 10));
-          object3D.rotation.y = rotation || 0;
-          console.log(object3D);
-          if (animationSpeed !== undefined) {
-            function animate() {
-              object3D.rotation.y += animationSpeed;
+        object3D.position.copy(position || new THREE.Vector3(0, 0, 0));
+        object3D.scale.copy(scale || new THREE.Vector3(10, 10, 10));
+        object3D.rotation.y = rotation || 0;
 
-              requestAnimationFrame(animate);
-            }
-
-            animate();
+        if (animationSpeed !== undefined) {
+          function animate() {
+            object3D.rotation.y += animationSpeed;
+            requestAnimationFrame(animate);
           }
 
-          scene.add(object3D);
-          return object3D;
-        });
-      });
-    });
+          animate();
+        }
+
+        scene.add(object3D);
+
+        console.log("Type of loaded object:", object3D.constructor.name);
+
+        if (object3D instanceof THREE.Object3D) {
+          resolve(object3D);
+        } else {
+          reject("Loaded object is not an instance of THREE.Object3D");
+        }
+      },
+      undefined,
+      function (error) {
+        console.error("Error loading the model:", error);
+        reject(error);
+      }
+    );
   });
 }
 
@@ -73,8 +96,3 @@ modelLoader.propTypes = {
   rotation: PropTypes.number,
   animationSpeed: PropTypes.number,
 };
-
-// Example usage:
-// const position = new THREE.Vector3(0, 15, -20);
-// const scale = new THREE.Vector3(10, 8, 10);
-// DmodelLoader("your_model.gltf", "arm_texture.jpg", "diff_texture.jpg", "nor_texture.jpg", yourScene, position, scale);

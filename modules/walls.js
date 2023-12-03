@@ -75,39 +75,40 @@ export function createWalls(scene, textureLoader) {
   );
   backWall.position.z = 30;
 
-  const horseStatue = modelLoader(
-    "./public/scanes/horseStatue/horse_statue_01_4k.gltf",
-    "./public/scanes/horseStatue/textures/horse_statue_01_arm_4k.jpg",
-    "./public/scanes/horseStatue/textures/horse_statue_01_diff_4k.jpg",
-    "./public/scanes/horseStatue/textures/horse_statue_01_nor_gl_4k.jpg",
-    scene,
-    new THREE.Vector3(-17, -4, 13.949511202295831), // Corrected syntax for position
-    new THREE.Vector3(60, 50, 60), // Corrected syntax for scale
-    Math.PI / 1.5,
-    0.006 // animationSpeed
-  );
+  async function loadModel() {
+    try {
+      const horseStatue = await modelLoader(
+        "./scanes/horseStatue/horse_statue_01_4k.gltf",
+        "./scanes/horseStatue/textures/horse_statue_01_arm_4k.jpg",
+        "./scanes/horseStatue/textures/horse_statue_01_diff_4k.jpg",
+        "./scanes/horseStatue/textures/horse_statue_01_nor_gl_4k.jpg",
+        scene,
+        new THREE.Vector3(-17, -4, 13.949511202295831),
+        new THREE.Vector3(60, 50, 60),
+        Math.PI / 1.5,
+        0.006
+      );
 
-  // const greenchair = modelLoader(
-  //   "./public/scanes/greenchair/GreenChair_01_4k.gltf",
-  //   "./public/scanes/greenchair/textures/GreenChair_01_arm_4k.jpg",
-  //   "./public/scanes/greenchair/textures/GreenChair_01_diff_4k.jpg",
-  //   "./public/scanes/greenchair/textures/GreenChair_01_nor_gl_4k.jpg",
-  //   scene,
-  //   new THREE.Vector3(15, -4, 18), // Corrected syntax for position
-  //   new THREE.Vector3(6, 6, 6), // Corrected syntax for scale
-  //   -Math.PI / 2
-  // );
+      console.log("Model loaded successfully:", horseStatue);
+    } catch (error) {
+      console.error("Error loading the model:", error);
+    }
+  }
+
+  loadModel();
+  console.log("Model loaded successfully:", loadModel());
+
   const clasicConsole = modelLoader(
-    "./public/scanes/classicConsole/ClassicConsole_01_4k.gltf",
-    "./public/scanes/classicConsole/textures/ClassicConsole_01_arm_4k.jpg",
-    "./public/scanes/classicConsole/textures/ClassicConsole_01_diff_4k.jpg",
-    "./public/scanes/classicConsole/textures/ClassicConsole_01_nor_gl_4k.jpg",
+    "./scanes/classicConsole/ClassicConsole_01_4k.gltf",
+    "./scanes/classicConsole/textures/ClassicConsole_01_arm_4k.jpg",
+    "./scanes/classicConsole/textures/ClassicConsole_01_diff_4k.jpg",
+    "./scanes/classicConsole/textures/ClassicConsole_01_nor_gl_4k.jpg",
     scene,
-    new THREE.Vector3(1.1476914998039847, -4, -3), // Corrected syntax for position
-    new THREE.Vector3(5, 4, 5), // Corrected syntax for scale
+    new THREE.Vector3(1.1476914998039847, -4, -3),
+    new THREE.Vector3(5, 4, 5),
     Math.PI / 1
   );
-  wallGroup.add(frontWall, backWall, leftWall, rightWall);
+  wallGroup.add(frontWall, backWall, leftWall, rightWall, loadModel());
 
   return wallGroup;
 }
