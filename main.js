@@ -37,7 +37,7 @@ addObjectsToScene(scene, paintings);
 
 setupPlayButton(controls);
 
-setupEventListeners(controls);
+setupEventListeners(controls, camera);
 
 clickHandling(renderer, camera, paintings);
 
