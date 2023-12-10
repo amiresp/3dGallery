@@ -103,16 +103,7 @@ function onKeyDown(event, controls, camera) {
   }
   if (event.key === "e") {
     console.log("e pressed", camera);
-    if (camera.position.y == 2) {
-      eventListenersLock = false;
-      cameraAnimation(camera);
-      controls.lock();
-      lockPointer = false;
-    }
-    if (camera.position.y == 1.4) {
-      eventListenersLock = true;
-      cameraAnimation(camera);
-    }
+    cameraAnimation(camera);
   }
 }
 

@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 export function cameraAnimation(camera) {
   console.log("camera", Math.ceil(camera.position.y));
-  console.log("camera", Math.ceil(camera.position.y));
+
   if (camera.position.y == 2) {
     gsap.to(camera.position, {
       duration: 2,
