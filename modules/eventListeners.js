@@ -1,16 +1,18 @@
 import { keysPressed } from "./movement.js"; // import the keysPressed object
 import { showMenu, hideMenu } from "./menu.js"; // import the showMenu function
 import { startAudio, stopAudio } from "./audioGuide.js";
-
+import { cameraAnimation } from "./cameraAnimation.js";
+import { cameraJumpAnimation } from "./cameraAnimation.js";
 let lockPointer = true;
 let showMenuOnUnlock = false;
 
 // add the controls parameter which is the pointer lock controls and is passed from main.js where setupEventListeners is called
+
 export const setupEventListeners = (controls, camera, scene) => {
   // add the event listeners to the document which is the whole page
+
   document.addEventListener(
     "keydown",
-
     (event) => onKeyDown(event, controls, camera),
     false
   );
@@ -63,9 +65,6 @@ function onKeyDown(event, controls, camera) {
     controls.unlock(); // unlock the pointer
     lockPointer = false;
   }
-  if (event.key === "e") {
-    console.log("e pressed");
-  }
 
   // if key prss}ed is enter or return for mac
   if (event.key === "Enter" || event.key === "Return") {
@@ -78,8 +77,7 @@ function onKeyDown(event, controls, camera) {
   if (event.key === " ") {
     // if the "p" key is pressed
     console.log("space pressed");
-    controls.getObject().position.y += 3;
-    // togglePointerLock(controls); // toggle the pointer lock
+    cameraJumpAnimation(camera);
   }
 
   if (event.key === "g") {
@@ -101,15 +99,26 @@ function onKeyDown(event, controls, camera) {
   }
 
   if (event.key === "r") {
-    // if the "r" key is pressed
-    location.reload(); // reload the page
+    location.reload();
+  }
+  if (event.key === "e") {
+    console.log("e pressed", camera);
+    if (camera.position.y == 2) {
+      eventListenersLock = false;
+      cameraAnimation(camera);
+      controls.lock();
+      lockPointer = false;
+    }
+    if (camera.position.y == 1.4) {
+      eventListenersLock = true;
+      cameraAnimation(camera);
+    }
   }
 }
 
 function onKeyUp(event, controls) {
-  // same but for keyup
   if (event.key in keysPressed) {
-    keysPressed[event.key] = false; // set to false when the key is released
+    keysPressed[event.key] = false;
   }
 }
 
