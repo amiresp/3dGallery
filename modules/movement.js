@@ -38,8 +38,14 @@ export const updateMovement = (delta, controls, camera, walls) => {
     controls.getObject().position.y += moveSpeed;
   }
 
+  // if (checkCollision(camera, object3D)) {
+  //   console.log("collision detected", object3D);
+  //   camera.position.copy(previousPosition); // reset the camera position to the previous position. The `previousPosition` variable is a clone of the camera position before the movement. We use `copy` instead of `set` because `set` will set the position to the same object, so if we change the previousPosition, the camera position will also change. `copy` creates a new object with the same values as the previousPosition.
+  // }
+
   // After the movement is applied, we check for collisions by calling the checkCollision function. If a collision is detected, we revert the camera's position to its previous position, effectively preventing the player from moving through walls.
   if (checkCollision(camera, walls)) {
+    console.log("walls walls", walls);
     camera.position.copy(previousPosition); // reset the camera position to the previous position. The `previousPosition` variable is a clone of the camera position before the movement. We use `copy` instead of `set` because `set` will set the position to the same object, so if we change the previousPosition, the camera position will also change. `copy` creates a new object with the same values as the previousPosition.
   }
 };
@@ -53,7 +59,7 @@ export const checkCollision = (camera, walls) => {
     // set the playerBoundingBox to the camera's world position and size. The size is 1, 1, 1 because the camera is a single point.
     // setFromCenterAndSize takes two parameters: center and size. The center is a Vector3 that represents the center of the bounding box. The size is a Vector3 that represents the size of the bounding box. The size is the distance from the center to the edge of the bounding box in each direction. So, if the size is 1, 1, 1, the bounding box will be 2 units wide, 2 units tall, and 2 units deep. If the size is 2, 2, 2, the bounding box will be 4 units wide, 4 units tall, and 4 units deep.
     cameraWorldPosition, // center
-    new THREE.Vector3(1, 1, 1) // size
+    new THREE.Vector3(2, 2, 2) // size
   );
 
   for (let i = 0; i < walls.children.length; i++) {
