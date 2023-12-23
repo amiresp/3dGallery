@@ -101,10 +101,31 @@ function onKeyDown(event, controls, camera) {
   if (event.key === "r") {
     location.reload();
   }
-  if (event.key === "e") {
-    console.log("e pressed", camera);
-    cameraAnimation(camera);
+  const areaBoundaries = {
+    // for sofa aniamtion area
+    minX: 19.7,
+    maxX: 29,
+    minY: 1.4,
+    maxY: 2.1,
+    minZ: -33,
+    maxZ: -21,
+  };
+
+  function isPointInsideArea(point) {
+    const { x, y, z } = point;
+    const { minX, maxX, minY, maxY, minZ, maxZ } = areaBoundaries;
+
+    return (
+      x >= minX && x <= maxX && y >= minY && y <= maxY && z >= minZ && z <= maxZ
+    );
   }
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "e" && isPointInsideArea(camera.position)) {
+      console.log("e pressed inside the specified area", camera);
+      cameraAnimation(camera);
+    }
+  });
 }
 
 function onKeyUp(event, controls) {
