@@ -1,6 +1,5 @@
 # 3D Gallery App
 
-![App Screenshot](screenshot.png)
 
 ## Table of Contents
 
