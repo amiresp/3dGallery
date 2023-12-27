@@ -39,3 +39,37 @@ Before you begin, ensure you have the following prerequisites installed:
 
    ```bash
    git clone https://github.com/your-username/3d-gallery-app.git
+
+
+   Navigate to the project directory:
+
+bash
+Copy code
+cd 3d-gallery-app
+Install dependencies:
+
+bash
+Copy code
+npm install
+Usage
+Start the development server:
+
+bash
+Copy code
+npm start
+Open your web browser and visit http://localhost:3000.
+
+Explore the 3D gallery and interact with the models.
+
+Contributing
+We welcome contributions! If you'd like to contribute to the project, please follow these steps:
+
+Fork the repository.
+Create a new branch for your feature or bug fix: git checkout -b feature/new-feature.
+Make your changes and commit them: git commit -m 'Add new feature'.
+Push to the branch: git push origin feature/new-feature.
+Create a pull request.
+License
+This project is licensed under the MIT License.
+
+
