@@ -59,7 +59,7 @@ Copy code
 npm start
 Open your web browser and visit http://localhost:3000.
 
-Explore the 3D gallery and interact with the models.
+Explore the 3D gallery and interact with the models
 
 Contributing
 We welcome contributions! If you'd like to contribute to the project, please follow these steps:
