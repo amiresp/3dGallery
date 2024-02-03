@@ -10,6 +10,10 @@
     "three-stdlib": "^2.21.8",
     "three-text2d": "^0.6.0"
   },
+  "scripts": {
+  "dev": "vite"
+}
+,
   "devDependencies": {
     "vite": "^4.5.0"
   }
