@@ -62,7 +62,7 @@ Open your web browser and visit http://localhost:3000.
 Explore the 3D gallery and interact with the models
 
 Contributing
-We welcome contributions! If you'd like to contribute to the project, please follow these steps:
+We welcome contributions! If you'd like to contribute to the project, please follow these steps
 
 Fork the repository.
 Create a new branch for your feature or bug fix: git checkout -b feature/new-feature.
