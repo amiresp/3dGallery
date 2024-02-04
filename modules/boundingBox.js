@@ -1,8 +1,6 @@
 import * as THREE from "three"
 
 export const createBoundingBoxes = (objects) => {
-  console.log(objects)
-
   if (!Array.isArray(objects)) {
     objects = objects.children
   }

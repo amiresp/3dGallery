@@ -64,15 +64,15 @@ modelLoader(
   new THREE.Vector3(10, 7.5, 10)
 )
 
-const ottoman = modelLoader(
-  "./scanes/ottoman/ottoman_01_4k.gltf",
-  "./scanes/ottoman/textures/ottoman_01_arm_4k.jpg",
-  "./scanes/ottoman/textures/ottoman_01_diff_4k.jpg",
-  "./scanes/ottoman/textures/ottoman_01_nor_gl_4k.jpg",
-  scene,
-  new THREE.Vector3(15, -4, 14.457978829375882),
-  new THREE.Vector3(6, 5, 6)
-)
+// const ottoman = modelLoader(
+//   "./scanes/ottoman/ottoman_01_4k.gltf",
+//   "./scanes/ottoman/textures/ottoman_01_arm_4k.jpg",
+//   "./scanes/ottoman/textures/ottoman_01_diff_4k.jpg",
+//   "./scanes/ottoman/textures/ottoman_01_nor_gl_4k.jpg",
+//   scene,
+//   new THREE.Vector3(15, -4, 14.457978829375882),
+//   new THREE.Vector3(6, 5, 6)
+// )
 
 loader.load("scanes/sofa2/sofa_02_4k.gltf", function (gltf) {
   var textureLoader = new THREE.TextureLoader()
@@ -132,12 +132,6 @@ loader.load("scanes/sofa2/sofa_02_4k.gltf", function (gltf) {
               modalLight3.castShadow = true
 
               scene.add(modalLight3)
-
-              console.log("Camera Position:", camera.position)
-              console.log("Model Position:", gltf.scene.position)
-              console.log("Model Scale:", gltf.scene.scale)
-              // const isColliding = updateMovement(camera, gltf.scene);
-              // console.log("Collision with model:", isColliding);
             }
           )
         }
