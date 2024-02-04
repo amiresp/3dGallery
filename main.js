@@ -24,24 +24,38 @@ setupAudio(camera)
 
 const textureLoader = new THREE.TextureLoader()
 
-const walls = await createWalls(scene, textureLoader)
-const floor = setupFloor(scene)
-const ceiling = createCeiling(scene, textureLoader)
-const paintings = createPaintings(scene, textureLoader)
-const lighting = setupLighting(scene, paintings)
+Promise.all([
+  createWalls(scene, textureLoader),
+  setupFloor(scene),
+  createCeiling(scene, textureLoader),
+  createPaintings(scene, textureLoader),
+])
+  .then(([walls, floor, ceiling, paintings]) => {
+    // Setup lighting
+    const lighting = setupLighting(scene, paintings)
 
-createBoundingBoxes(walls, scene)
-createBoundingBoxes(paintings, scene)
+    // Create bounding boxes for walls and paintings
+    createBoundingBoxes(walls, scene)
+    createBoundingBoxes(paintings, scene)
 
-addObjectsToScene(scene, paintings)
+    // Add paintings to the scene
+    addObjectsToScene(scene, paintings)
 
-setupPlayButton(controls)
+    // Setup play button for controls
+    setupPlayButton(controls)
 
-setupEventListeners(controls, camera)
+    // Setup event listeners for controls and camera
+    setupEventListeners(controls, camera)
 
-clickHandling(renderer, camera, paintings)
+    // Handle click events on paintings
+    clickHandling(renderer, camera, paintings)
 
-setupRendering(scene, camera, renderer, paintings, controls, walls)
+    // Setup rendering
+    setupRendering(scene, camera, renderer, paintings, controls, walls)
+  })
+  .catch((error) => {
+    console.error("Error loading assets:", error)
+  })
 
 //setupVR(renderer)
 
