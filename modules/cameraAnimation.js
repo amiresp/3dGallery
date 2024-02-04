@@ -12,11 +12,8 @@ export function cameraAnimation(camera) {
         const target = new THREE.Vector3(0, 0, 0)
         const currentPosition = camera.position.clone()
         const direction = target.sub(currentPosition).normalize()
-
         const lookAtMatrix = new THREE.Matrix4()
         lookAtMatrix.lookAt(currentPosition, target, camera.up)
-
-        s
         camera.quaternion.setFromRotationMatrix(lookAtMatrix)
       },
     })
@@ -34,8 +31,8 @@ export function cameraAnimation(camera) {
 export function cameraJumpAnimation(camera) {
   const jumpTimeline = gsap.timeline({ paused: true })
   jumpTimeline
-    .to(camera.position, { y: 4, duration: 0.5, ease: "power2.inOut" })
-    .to(camera.position, { y: 2, duration: 0.5, ease: "power2.inOut" })
+    .to(camera.position, { y: 4, duration: 0.3, ease: "power2.inOut" })
+    .to(camera.position, { y: 2, duration: 0.3, ease: "power2.inOut" })
     .call(() => {
       document.addEventListener("keydown", jumpListener)
     })
@@ -48,4 +45,14 @@ export function cameraJumpAnimation(camera) {
   }
 
   document.addEventListener("keydown", jumpListener)
+}
+
+// Function to start the lie down animation
+export function startLieDownAnimation(camera) {
+  gsap.to(camera.position, { y: 1, duration: 0.3, ease: "power2.inOut" })
+}
+
+// Function to end the lie down animation
+export function endLieDownAnimation(camera) {
+  gsap.to(camera.position, { y: 2, duration: 0.3, ease: "power2.inOut" })
 }
