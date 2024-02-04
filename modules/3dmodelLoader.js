@@ -37,74 +37,67 @@ export function modelLoader(
   rotation = undefined,
   animationSpeed = undefined
 ) {
-  return new Promise((resolve, reject) => {
-    const loader = new GLTFLoader()
+  const loader = new GLTFLoader()
 
-    const armMaterial = new THREE.MeshStandardMaterial({
-      map: new THREE.TextureLoader().load(armTextureURL),
-      roughness: 0.2,
-      metalness: 0.5,
-    })
-
-    const diffMaterial = new THREE.MeshStandardMaterial({
-      map: new THREE.TextureLoader().load(diffTextureURL),
-    })
-
-    const roughMaterial = new THREE.MeshStandardMaterial({
-      map: new THREE.TextureLoader().load(roughTextureURL),
-    })
-
-    const object3D = new THREE.Object3D()
-
-    loader.load(
-      `${GLTF}`,
-      function (gltf) {
-        gltf.scene.traverse(function (node) {
-          if (node.isMesh) {
-            if (node.material.map) {
-              if (node.name.includes("arm")) {
-                node.material = armMaterial
-              } else if (node.name.includes("diff")) {
-                node.material = diffMaterial
-              } else if (node.name.includes("rough")) {
-                node.material = roughMaterial
-              }
-            }
-            node.material.needsUpdate = true
-          }
-        })
-
-        object3D.add(gltf.scene)
-
-        object3D.position.copy(position || new THREE.Vector3(0, 0, 0))
-        object3D.scale.copy(scale || new THREE.Vector3(10, 10, 10))
-        object3D.rotation.y = rotation || 0
-
-        if (animationSpeed !== undefined) {
-          function animate() {
-            object3D.rotation.y += animationSpeed
-            requestAnimationFrame(animate)
-          }
-
-          animate()
-        }
-
-        scene.add(object3D)
-
-        // Add bounding box for collision detection
-        new THREE.Box3().setFromObject(object3D)
-
-        if (object3D instanceof THREE.Object3D) {
-          resolve(object3D)
-        } else {
-          reject("Loaded object is not an instance of THREE.Object3D")
-        }
-      },
-      undefined,
-      function (error) {
-        console.error("Error loading the model:", error)
-        reject(error)
-      }
-    )
+  const armMaterial = new THREE.MeshStandardMaterial({
+    map: new THREE.TextureLoader().load(armTextureURL),
+    roughness: 0.2,
+    metalness: 0.5,
   })
+
+  const diffMaterial = new THREE.MeshStandardMaterial({
+    map: new THREE.TextureLoader().load(diffTextureURL),
+  })
+
+  const roughMaterial = new THREE.MeshStandardMaterial({
+    map: new THREE.TextureLoader().load(roughTextureURL),
+  })
+
+  const object3D = new THREE.Object3D()
+
+  loader.load(
+    `${GLTF}`,
+    function (gltf) {
+      gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+          if (node.material.map) {
+            if (node.name.includes("arm")) {
+              node.material = armMaterial
+            } else if (node.name.includes("diff")) {
+              node.material = diffMaterial
+            } else if (node.name.includes("rough")) {
+              node.material = roughMaterial
+            }
+          }
+          node.material.needsUpdate = true
+        }
+      })
+
+      object3D.add(gltf.scene)
+
+      object3D.position.copy(position || new THREE.Vector3(0, 0, 0))
+      object3D.scale.copy(scale || new THREE.Vector3(10, 10, 10))
+      object3D.rotation.y = rotation || 0
+
+      if (animationSpeed !== undefined) {
+        function animate() {
+          object3D.rotation.y += animationSpeed
+          requestAnimationFrame(animate)
+        }
+
+        animate()
+      }
+
+      scene.add(object3D)
+
+      // Add bounding box for collision detection
+      new THREE.Box3().setFromObject(object3D)
+    },
+    undefined,
+    function (error) {
+      console.error("Error loading the model:", error)
+    }
+  )
+
+  return object3D
 }

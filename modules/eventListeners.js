@@ -51,6 +51,9 @@ function onKeyDown(event, controls, camera) {
     controls.unlock()
     lockPointer = false
   }
+  if (event.key === "e") {
+    cameraAnimation(camera)
+  }
 
   if (event.key === "Enter" || event.key === "Return") {
     hideMenu()

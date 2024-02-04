@@ -8,26 +8,21 @@ export const setupRendering = (
   renderer,
   paintings,
   controls,
-  walls,
-  horseStatue
+  walls
 ) => {
   const sittingAnimationInfoBox = document.getElementById(
     "sittingAnimationInfoBox"
   )
 
-  // Function to show the information box
   function showInfoBox() {
     sittingAnimationInfoBox.style.display = "block"
   }
 
-  // Function to hide the information box
   function hideInfoBox() {
     sittingAnimationInfoBox.style.display = "none"
   }
 
-  // Function to handle sitting animation completion
   function onSittingAnimationComplete() {
-    // Hide the information box when the animation is complete
     hideInfoBox()
   }
 
@@ -42,14 +37,13 @@ export const setupRendering = (
     maxZ: -21,
   }
 
-  let isInsideSofaArea = false // Track if the user is inside the sofa area
+  let isInsideSofaArea = false
 
   let render = function () {
     const delta = clock.getDelta()
 
     updateMovement(delta, controls, camera, walls)
 
-    // Check if the camera is inside the sofa area
     const { x, y, z } = camera.position
     if (
       x >= areaBoundaries.minX &&
@@ -60,13 +54,11 @@ export const setupRendering = (
       z <= areaBoundaries.maxZ
     ) {
       if (!isInsideSofaArea) {
-        // If the user entered the area, show the info box
         showInfoBox()
         isInsideSofaArea = true
       }
     } else {
       if (isInsideSofaArea) {
-        // If the user left the area, hide the info box
         hideInfoBox()
         isInsideSofaArea = false
       }

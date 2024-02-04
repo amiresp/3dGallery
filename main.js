@@ -24,14 +24,14 @@ setupAudio(camera)
 
 const textureLoader = new THREE.TextureLoader()
 
-const walls = createWalls(scene, textureLoader)
+const walls = await createWalls(scene, textureLoader)
 const floor = setupFloor(scene)
 const ceiling = createCeiling(scene, textureLoader)
 const paintings = createPaintings(scene, textureLoader)
 const lighting = setupLighting(scene, paintings)
 
-createBoundingBoxes(walls)
-createBoundingBoxes(paintings)
+createBoundingBoxes(walls, scene)
+createBoundingBoxes(paintings, scene)
 
 addObjectsToScene(scene, paintings)
 
