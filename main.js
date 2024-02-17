@@ -15,6 +15,9 @@ import { clickHandling } from "./modules/clickHandling.js"
 //import { setupVR } from "./modules/VRSupport.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
 import { modelLoader } from "./modules/3dmodelLoader.js"
+import { fadeInText } from "./modules/animations.js"
+import heroCanvas from "./modules/heroCanvas.js"
+import { startAudio } from "./modules/audioGuide.js"
 
 const loader = new GLTFLoader()
 
@@ -28,20 +31,17 @@ Promise.all([
   createWalls(scene, textureLoader),
   setupFloor(scene),
   createCeiling(scene, textureLoader),
+
   createPaintings(scene, textureLoader),
 ])
   .then(([walls, floor, ceiling, paintings]) => {
-    // Setup lighting
     const lighting = setupLighting(scene, paintings)
 
-    // Create bounding boxes for walls and paintings
     createBoundingBoxes(walls, scene)
     createBoundingBoxes(paintings, scene)
 
-    // Add paintings to the scene
     addObjectsToScene(scene, paintings)
 
-    // Setup play button for controls
     setupPlayButton(controls)
 
     // Setup event listeners for controls and camera
@@ -56,9 +56,9 @@ Promise.all([
   .catch((error) => {
     console.error("Error loading assets:", error)
   })
-
+startAudio()
 //setupVR(renderer)
-
+heroCanvas()
 const sideTable = modelLoader(
   "./scanes/sidetable/side_table_tall_01_4k.gltf",
   "./scanes/sidetable/textures/side_table_tall_01_arm_4k.jpg",
@@ -202,8 +202,8 @@ loader.load("scanes/Chandelier_01_4k.gltf", function (gltf) {
     }
   )
 })
-
-window.addEventListener("load", () => {
-  const loadingPage = document.getElementById("loading-screen")
-  loadingPage.style.display = "none"
-})
+fadeInText()
+// window.addEventListener("load", () => {
+//   const loadingPage = document.getElementById("loading-screen")
+//   loadingPage.style.display = "none"
+// })
