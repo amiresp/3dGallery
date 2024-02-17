@@ -203,7 +203,7 @@ loader.load("scanes/Chandelier_01_4k.gltf", function (gltf) {
   )
 })
 fadeInText()
-// window.addEventListener("load", () => {
-//   const loadingPage = document.getElementById("loading-screen")
-//   loadingPage.style.display = "none"
-// })
+window.addEventListener("load", () => {
+  const loadingPage = document.getElementById("loading-screen")
+  loadingPage.style.display = "none"
+})
