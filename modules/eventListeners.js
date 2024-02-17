@@ -31,7 +31,6 @@ export const setupEventListeners = (controls, camera, scene) => {
     showMenuOnUnlock = false
   })
 
-  document.getElementById("start_audio").addEventListener("click", startAudio)
   document.getElementById("stop_audio").addEventListener("click", stopAudio)
 }
 
@@ -101,13 +100,27 @@ function onKeyUp(event, controls, camera) {
   }
 }
 
-document.getElementById("toggle-info").addEventListener("click", () => {
-  document.getElementById("info-panel").classList.toggle("collapsed")
-  document.getElementById("toggle-info").innerText = document
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOMContentLoaded event fired")
+
+  const toggleInfoButton = document.getElementById("toggle-info")
+  console.log("toggleInfoButton:", toggleInfoButton)
+  toggleInfoButton.addEventListener("click", function () {
+    const infoPanel = document.getElementById("info-panel")
+
+    infoPanel.classList.toggle("collapsed")
+
+    toggleInfoButton.innerText = infoPanel.classList.contains("collapsed")
+      ? "Show"
+      : "Hide"
+  })
+
+  toggleInfoButton.innerText = document
     .getElementById("info-panel")
     .classList.contains("collapsed")
     ? "Show"
     : "Hide"
+  toggleInfoButton.click()
 })
 
 document.getElementById("about_button").addEventListener("click", function () {

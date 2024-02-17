@@ -18,9 +18,9 @@ export default function heroCanvas() {
   })
   renderer.setSize(window.innerWidth, window.innerHeight)
 
-  camera.position.z = 3
-  camera.position.y = 0
-  camera.position.x = 0
+  camera.position.z = 3.4
+  camera.position.y = 0.5
+  camera.position.x = -0.5
 
   const lighting = new THREE.AmbientLight(0xffffff, 0.5) // Adjust intensity
 
@@ -90,7 +90,7 @@ export default function heroCanvas() {
       }
       gltf.scene.position.set(0, -4.5, 0)
       // Add the GLTF scene to your Three.js scene
-      gltf.scene.scale.set(1.2, 1.1, 1.2)
+      gltf.scene.scale.set(1.3, 1.2, 1.3)
       scene.add(gltf.scene)
     },
     undefined,
