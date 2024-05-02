@@ -13,9 +13,16 @@ export const setupRendering = (
   const sittingAnimationInfoBox = document.getElementById(
     "sittingAnimationInfoBox"
   )
+  var sittingAnimationInfoBoxInnerHTML = sittingAnimationInfoBox.innerHTML
 
   function showInfoBox() {
     sittingAnimationInfoBox.style.display = "block"
+    console.log(camera.position.y)
+    if (camera.position.y < 1.5) {
+      sittingAnimationInfoBoxInnerHTML == "Press E to stand up"
+    } else {
+      sittingAnimationInfoBoxInnerHTML == "Press E to sit down"
+    }
   }
 
   function hideInfoBox() {

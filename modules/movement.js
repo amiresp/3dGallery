@@ -36,7 +36,6 @@ export const updateMovement = (delta, controls, camera, walls) => {
   }
 
   if (checkCollision(camera, walls)) {
-    console.log("walls walls", walls)
     camera.position.copy(previousPosition)
   }
 }

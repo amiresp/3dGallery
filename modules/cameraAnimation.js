@@ -3,6 +3,9 @@ import * as THREE from "three"
 
 export function cameraAnimation(camera) {
   if (camera.position.y == 2) {
+    document.getElementById("sittingAnimationInfoBox").innerHTML =
+      "Press E to stand up"
+
     gsap.to(camera.position, {
       duration: 2,
       x: 28.127923611390482,
@@ -18,8 +21,9 @@ export function cameraAnimation(camera) {
       },
     })
   }
-
   if (camera.position.y == 1.4) {
+    document.getElementById("sittingAnimationInfoBox").innerHTML =
+      "Press E to relax on the sofa"
     gsap.to(camera.position, {
       duration: 2,
       x: 21.029779818099268,
@@ -28,6 +32,7 @@ export function cameraAnimation(camera) {
     })
   }
 }
+
 export function cameraJumpAnimation(camera) {
   const jumpTimeline = gsap.timeline({ paused: true })
   jumpTimeline
