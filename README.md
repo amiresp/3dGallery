@@ -1,18 +1,5 @@
 # 3D Gallery App
 
-
-## Table of Contents
-
-- [Description](#description)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
-
 ## Description
 
 The 3D Gallery App is a web application built using Three.js, HTML, and CSS to create an immersive 3D gallery experience. This app allows users to showcase and explore 3D models in a visually engaging manner.
