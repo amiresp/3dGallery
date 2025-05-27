@@ -5,15 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Art Exhibition</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y82T1LTSMP"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-Y82T1LTSMP');
-    </script>
     <link rel="icon" type="image/svg+xml" href="/img/art.png">
     <link rel="stylesheet" href="./syle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,12 +60,14 @@
                                     bringing it to life in ways never before imagined.</span>
                             </div>
                             <div class="buttons">
-
+                                <select id="collection-select" class="button-50" style="width:100%;margin-right: 10px;">
+                                    <option value="">Loading...</option>
+                                </select>
                                 <button id="play_button" class="button-50">EXPLORE ART</button>
 
-                                <div id="about_button_container">
+                                <!-- <div id="about_button_container">
                                     <button id="about_button" class="button-50">ABOUT</button>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -149,6 +142,59 @@
         <div id="painting-info"></div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const select = document.getElementById('collection-select');
+
+            fetch('/api/collections.json') // ← آدرس JSON یا API رو اینجا بذار
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // پاک کردن گزینه‌های اولیه
+                    select.innerHTML = '';
+
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.value;
+                        option.textContent = item.label;
+                        select.appendChild(option);
+                    });
+
+                    // اگر URL دارای پارامتر بود، مقدار اولیه رو تنظیم کن
+                    const params = new URLSearchParams(window.location.search);
+                    const current = params.get('collection');
+                    if (current) {
+                        select.value = current;
+                        handleCollectionChange(current);
+                    }
+
+                    select.addEventListener('change', (e) => {
+                        const selectedValue = e.target.value;
+                        const url = new URL(window.location.href);
+                        const params = url.searchParams;
+
+                        if (params.get('collection') === selectedValue) {
+                            params.delete('collection');
+                        } else {
+                            params.set('collection', selectedValue);
+                        }
+
+                        window.history.replaceState({}, '', `${url.pathname}?${params.toString()}`);
+                        handleCollectionChange(selectedValue);
+                    });
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    select.innerHTML = '<option disabled>خطا در بارگذاری گزینه‌ها</option>';
+                });
+        });
+
+
+    </script>
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
 

@@ -123,9 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
   toggleInfoButton.click()
 })
 
-document.getElementById("about_button").addEventListener("click", function () {
-  document.getElementById("about-overlay").classList.add("show")
-})
+// document.getElementById("about_button").addEventListener("click", function () {
+//   document.getElementById("about-overlay").classList.add("show")
+// })
 
 document.getElementById("close-about").addEventListener("click", function () {
   document.getElementById("about-overlay").classList.remove("show")
