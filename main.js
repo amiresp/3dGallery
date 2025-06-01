@@ -26,88 +26,86 @@ let { camera, controls, renderer } = setupScene()
 setupAudio(camera)
 
 async function fetchPaintingData(collectionId) {
+  console.log('call api Painting', collectionId);
+  let output = [];
   try {
-    let artist, imgNumber;
-
-    switch (collectionId) {
-      case 'monet':
-        artist = "Claude Monet";
-        imgNumber = "2";
-        break;
-      case 'picasso':
-        artist = "Pablo Picasso";
-        imgNumber = "3";
-        break;
-      default:
-        artist = "Vincent van Gogh";
-        imgNumber = "1";
+    const response = await fetch(`http://127.0.0.1:8000/api/rooms/${collectionId}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
 
-    return [
-      // Front Wall
-      ...Array.from({ length: 4 }, (_, i) => ({
-        imgSrc: `artworks/${imgNumber}.jpg`,
-        width: 8,
-        height: 8,
-        position: { x: -20 + 15 * i, y: 4, z: -39.9 },
-        rotationY: 0,
-        info: {
-          title: `${artist.split(' ')[1]} ${i + 1}`,
-          artist: artist,
-          description: `This is one of the masterpieces by ${artist}, showcasing unique style and emotional honesty. Artwork ${i + 1} perfectly encapsulates the artist's vision.`,
-          year: `Year ${i + 1}`,
-          link: "https://github.com/Aliozzaim",
-        },
-      })),
+    const data = await response.json();
 
-      // Back Wall
-      ...Array.from({ length: 4 }, (_, i) => ({
-        imgSrc: `artworks/${imgNumber}.jpg`,
-        width: 5,
-        height: 3,
-        position: { x: -15 + 10 * i, y: 2, z: 29.9 },
-        rotationY: Math.PI,
-        info: {
-          title: `${artist.split(' ')[1]} ${i + 5}`,
-          artist: artist,
-          description: `Artwork ${i + 5} by ${artist} is an exceptional piece showcasing remarkable ability to capture emotion and atmosphere.`,
-          year: `Year ${i + 5}`,
-          link: "https://github.com/Aliozzaim",
-        },
-      })),
+    if (Array.isArray(data.images)) {
+      data.images.forEach((img, i) => {
+        const wall = i % 4
+        let position, rotationY
 
-      // Left Wall
-      ...Array.from({ length: 4 }, (_, i) => ({
-        imgSrc: `artworks/${imgNumber}.jpg`,
-        width: 5,
-        height: 3,
-        position: { x: -29.9, y: 2, z: -35 + 10 * i },
-        rotationY: Math.PI / 2,
-        info: {
-          title: `${artist.split(' ')[1]} ${i + 9}`,
-          artist: artist,
-          description: `With its striking use of color and brushwork, Artwork ${i + 9} is a testament to ${artist}'s artistic genius.`,
-          year: `Year ${i + 9}`,
-          link: "https://github.com/Aliozzaim",
-        },
-      })),
+        switch (wall) {
+          case 0: // Front
+            position = { x: -20 + 15 * (i % 4), y: 4, z: -39.9 }
+            rotationY = 0
+            break
+          case 1: // Back
+            position = { x: -15 + 10 * (i % 4), y: 2, z: 29.9 }
+            rotationY = Math.PI
+            break
+          case 2: // Left
+            position = { x: -29.9, y: 2, z: -35 + 10 * (i % 4) }
+            rotationY = Math.PI / 2
+            break
+          case 3: // Right
+            position = { x: 29.9, y: 2, z: -5 + 10 * (i % 4) }
+            rotationY = -Math.PI / 2
+            break
+        }
 
-      // Right Wall
-      ...Array.from({ length: 4 }, (_, i) => ({
-        imgSrc: `artworks/${imgNumber}.jpg`,
-        width: 5,
-        height: 3,
-        position: { x: 29.9, y: 2, z: -5 + 10 * i },
-        rotationY: -Math.PI / 2,
-        info: {
-          title: `${artist.split(' ')[1]} ${i + 13}`,
-          artist: artist,
-          description: `Artwork ${i + 13} is a captivating piece by ${artist}, reflecting distinctive style and deep passion for art.`,
-          year: `Year ${i + 13}`,
-          link: "https://github.com/Aliozzaim",
-        },
-      })),
-    ];
+        console.log('call api  Painting response ', {
+          imgSrc: img.image,
+          width: 5,
+          height: 3,
+          position,
+          rotationY,
+          info: {
+            title: `${data.title} ${i + 1}`,
+            artist: data.title,
+            description: img.caption,
+            year: `Year ${i + 1}`,
+            link: "https://github.com/Aliozzaim",
+          },
+        });
+        output.push({
+          imgSrc: img.image,
+          width: 5,
+          height: 3,
+          position,
+          rotationY,
+          info: {
+            title: `${data.title} ${i + 1}`,
+            artist: data.title,
+            description: img.caption,
+            year: `Year ${i + 1}`,
+            link: "https://github.com/Aliozzaim",
+          },
+        });
+        // return {
+        //   imgSrc: img.image,
+        //   width: 5,
+        //   height: 3,
+        //   position,
+        //   rotationY,
+        //   info: {
+        //     title: `${data.title} ${i + 1}`,
+        //     artist: data.title,
+        //     description: img.caption,
+        //     year: `Year ${i + 1}`,
+        //     link: "https://github.com/Aliozzaim",
+        //   },
+        // }
+      });
+      return output;
+    }
+
   } catch (error) {
     console.error("Error fetching painting data:", error);
     return [];
@@ -124,11 +122,13 @@ function handleCollectionChange(collectionId) {
 }
 
 // Modify initGallery to accept collectionId
-async function initGallery(collectionId = 'van-gogh') {
+async function initGallery(collectionId = 'classic-room') {
   const textureLoader = new THREE.TextureLoader()
   const paintingData = await fetchPaintingData(collectionId);
 
-  function createPaintings(scene, textureLoader) {
+  console.log("Painting Data:", paintingData);
+
+  async function createPaintings(scene, textureLoader) {
     let paintings = [];
 
     paintingData.forEach((data) => {
@@ -368,3 +368,5 @@ window.addEventListener("load", () => {
   const loadingPage = document.getElementById("loading-screen")
   loadingPage.style.display = "none"
 })
+
+window.handleCollectionChange = handleCollectionChange;
