@@ -148,7 +148,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const select = document.getElementById('collection-select');
 
-            fetch('http://127.0.0.1:8000/api/rooms') // ← آدرس JSON یا API رو اینجا بذار
+            fetch('http://141.11.182.36:8000/api/rooms/') // ← آدرس JSON یا API رو اینجا بذار
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -158,6 +158,11 @@
                 .then(data => {
                     // پاک کردن گزینه‌های اولیه
                     select.innerHTML = '';
+
+                    const option = document.createElement('option');
+                    option.value = '---';
+                    option.textContent = 'Choose a collection';
+                    select.appendChild(option);
 
                     data.forEach(item => {
                         const option = document.createElement('option');

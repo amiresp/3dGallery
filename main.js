@@ -27,9 +27,12 @@ setupAudio(camera)
 
 async function fetchPaintingData(collectionId) {
   console.log('call api Painting', collectionId);
+  if (!collectionId) {
+    collectionId = 'modern-room';
+  }
   let output = [];
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/rooms/${collectionId}`);
+    const response = await fetch(`http://141.11.182.36:8000/api/rooms/${collectionId}`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -132,10 +135,11 @@ async function initGallery(collectionId = 'classic-room') {
     let paintings = [];
 
     paintingData.forEach((data) => {
-      const painting = new THREE.Mesh(
-        new THREE.PlaneGeometry(data.width, data.height),
-        new THREE.MeshLambertMaterial({ map: textureLoader.load(data.imgSrc) })
-      );
+      const geometry = new THREE.PlaneGeometry(data.width, data.height);
+      const texture = textureLoader.load(data.imgSrc);
+      const material = new THREE.MeshLambertMaterial({ map: texture });
+
+      const painting = new THREE.Mesh(geometry, material);
 
       painting.position.set(data.position.x, data.position.y, data.position.z);
       painting.rotation.y = data.rotationY;
@@ -151,6 +155,28 @@ async function initGallery(collectionId = 'classic-room') {
 
       paintings.push(painting);
     });
+
+    //   paintingData.forEach((data) => {
+    //     const painting = new THREE.Mesh(
+    //       new THREE.PlaneGeometry(data.width, data.height),
+
+    //       new THREE.MeshLambertMaterial({ map: textureLoader.load(data.imgSrc) })
+    //     );
+
+    //     painting.position.set(data.position.x, data.position.y, data.position.z);
+    //     painting.rotation.y = data.rotationY;
+
+    //     painting.userData = {
+    //       type: "painting",
+    //       info: data.info,
+    //       url: data.info.link,
+    //     };
+
+    //     painting.castShadow = true;
+    //     painting.receiveShadow = true;
+
+    //     paintings.push(painting);
+    //   });
 
     return paintings;
   }
@@ -361,9 +387,11 @@ document.addEventListener('DOMContentLoaded', () => {
 const params = new URLSearchParams(window.location.search);
 const collectionFromURL = params.get('collection');
 console.log(collectionFromURL);
-document.getElementById('collection-select').value = collectionFromURL;
-// Initial gallery load
-initGallery(collectionFromURL);
+if (collectionFromURL) {
+  document.getElementById('collection-select').value = collectionFromURL;
+  // Initial gallery load
+  initGallery(collectionFromURL);
+}
 window.addEventListener("load", () => {
   const loadingPage = document.getElementById("loading-screen")
   loadingPage.style.display = "none"
