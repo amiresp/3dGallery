@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { modelLoader } from "./3dmodelLoader"
+// import { modelLoader } from "./3dmodelLoader"
 
 export async function createWalls(scene, textureLoader) {
   let wallGroup = new THREE.Group()
@@ -64,25 +64,25 @@ export async function createWalls(scene, textureLoader) {
 
   wallGroup.add(frontWall, backWall, leftWall, rightWall)
 
-  try {
-    const clasicConsole = modelLoader(
-      "./scanes/classicConsole/ClassicConsole_01_4k.gltf",
-      "./scanes/classicConsole/textures/ClassicConsole_01_arm_4k.jpg",
-      "./scanes/classicConsole/textures/ClassicConsole_01_diff_4k.jpg",
-      "./scanes/classicConsole/textures/ClassicConsole_01_nor_gl_4k.jpg",
-      scene,
-      new THREE.Vector3(1.1476914998039847, -4, -3),
-      new THREE.Vector3(5, 4, 5),
-      Math.PI / 1
-    )
+  // try {
+  //   const clasicConsole = modelLoader(
+  //     "./scanes/classicConsole/ClassicConsole_01_4k.gltf",
+  //     "./scanes/classicConsole/textures/ClassicConsole_01_arm_4k.jpg",
+  //     "./scanes/classicConsole/textures/ClassicConsole_01_diff_4k.jpg",
+  //     "./scanes/classicConsole/textures/ClassicConsole_01_nor_gl_4k.jpg",
+  //     scene,
+  //     new THREE.Vector3(1.1476914998039847, -4, -3),
+  //     new THREE.Vector3(5, 4, 5),
+  //     Math.PI / 1
+  //   )
 
-    if (clasicConsole instanceof THREE.Object3D) {
-      wallGroup.add(clasicConsole)
-    }
-  } catch (error) {
-    console.error("Error loading models:", error)
-    throw error
-  }
+  //   if (clasicConsole instanceof THREE.Object3D) {
+  //     wallGroup.add(clasicConsole)
+  //   }
+  // } catch (error) {
+  //   console.error("Error loading models:", error)
+  //   throw error
+  // }
 
   return wallGroup
 }

@@ -2,8 +2,8 @@ import { keysPressed } from "./movement.js"
 import { showMenu, hideMenu } from "./menu.js"
 import { startAudio, stopAudio } from "./audioGuide.js"
 import {
-  cameraAnimation,
-  cameraJumpAnimation,
+  // cameraAnimation,
+  // cameraJumpAnimation,
   startLieDownAnimation,
   endLieDownAnimation,
 } from "./cameraAnimation.js"
@@ -50,9 +50,9 @@ function onKeyDown(event, controls, camera) {
     controls.unlock()
     lockPointer = false
   }
-  if (event.key === "e") {
-    cameraAnimation(camera)
-  }
+  // if (event.key === "e") {
+  //   cameraAnimation(camera)
+  // }
 
   if (event.key === "Enter" || event.key === "Return") {
     hideMenu()
@@ -60,9 +60,9 @@ function onKeyDown(event, controls, camera) {
     lockPointer = true
   }
 
-  if (event.key === " ") {
-    cameraJumpAnimation(camera)
-  }
+  // if (event.key === " ") {
+  //   cameraJumpAnimation(camera)
+  // }
 
   if (event.key === "g") {
     startAudio()
@@ -83,10 +83,10 @@ function onKeyDown(event, controls, camera) {
     location.reload()
   }
 
-  if (event.ctrlKey) {
-    startLieDownAnimation(camera)
-    lieDownAnimationActive = true
-  }
+  // if (event.ctrlKey) {
+  //   startLieDownAnimation(camera)
+  //   lieDownAnimationActive = true
+  // }
 }
 
 function onKeyUp(event, controls, camera) {

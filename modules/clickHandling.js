@@ -16,7 +16,7 @@ function clickHandling(renderer, camera, paintings) {
 }
 
 function onClick(camera, paintings) {
-  console.log(camera.position)
+  // console.log(camera.position)
   raycaster.setFromCamera(mouse, camera)
 
   const intersects = raycaster.intersectObjects(paintings)

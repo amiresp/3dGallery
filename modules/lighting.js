@@ -46,42 +46,44 @@ export const setupLighting = (scene, paintings) => {
     new THREE.Vector3(0, 0, -20)
   );
   scene.add(frontWallSpotlight);
-  const backWallSpotlight = createSpotlight(
-    0,
-    10,
-    10,
-    15,
-    new THREE.Vector3(0, 0, 20)
-  );
-  scene.add(backWallSpotlight);
-  const leftWallSpotlight = createSpotlight(
-    -13,
-    6.7,
-    0,
-    20,
-    new THREE.Vector3(-20, 0, 0)
-  );
-  scene.add(leftWallSpotlight);
-  const rightWallSpotlight = createSpotlight(
-    13,
-    8,
-    0,
-    15,
-    new THREE.Vector3(20, 0, 5)
-  );
-  scene.add(rightWallSpotlight);
-  const statueSpotlight = createSpotlight(
-    0,
-    15,
-    2,
-    100,
-    new THREE.Vector3(0, -4.2, 0)
-  ); // Spotlight for the statue
 
-  statueSpotlight.angle = 0.3;
-  statueSpotlight.decay = 1.5;
-  statueSpotlight.penumbra = 0.2;
-  statueSpotlight.distance = 0;
+  // const backWallSpotlight = createSpotlight(
+  //   0,
+  //   10,
+  //   10,
+  //   15,
+  //   new THREE.Vector3(0, 0, 20)
+  // );
+  // scene.add(backWallSpotlight);
+  // const leftWallSpotlight = createSpotlight(
+  //   -13,
+  //   6.7,
+  //   0,
+  //   20,
+  //   new THREE.Vector3(-20, 0, 0)
+  // );
+  // scene.add(leftWallSpotlight);
+  // const rightWallSpotlight = createSpotlight(
+  //   13,
+  //   8,
+  //   0,
+  //   15,
+  //   new THREE.Vector3(20, 0, 5)
+  // );
+  // scene.add(rightWallSpotlight);
+  // const statueSpotlight = createSpotlight(
+  //   0,
+  //   15,
+  //   2,
+  //   100,
+  //   new THREE.Vector3(0, -4.2, 0)
+  // ); // Spotlight for the statue
+
+  // statueSpotlight.angle = 0.3;
+  // statueSpotlight.decay = 1.5;
+  // statueSpotlight.penumbra = 0.2;
+  // statueSpotlight.distance = 0;
+
   //model light
   const modelLight = new THREE.PointLight(0xfcbe03, 25);
   modelLight.position.set(0, 12, -20);
@@ -92,12 +94,12 @@ export const setupLighting = (scene, paintings) => {
 
   scene.add(modelLight1);
 
-  //spotlight for classic console
-  const classicConsoleSpotlight = createSpotlight(
-    0,
-    10,
-    0,
-    10,
-    new THREE.Vector3(0, 0, 0)
-  ); // Spotlight for the statue
+  // //spotlight for classic console
+  // const classicConsoleSpotlight = createSpotlight(
+  //   0,
+  //   10,
+  //   0,
+  //   10,
+  //   new THREE.Vector3(0, 0, 0)
+  // ); // Spotlight for the statue
 };
